@@ -32,6 +32,12 @@ namespace ServerApp.Models.Characters.Heroes
             set => Contract.Weapon(nameof(Weapon), value, out this._weapon);
         }
         
+        public string Token
+        {
+            get;
+            set;
+        }
+
         [NotMapped]
         private static HeroContract Contract => new HeroContract();
 
