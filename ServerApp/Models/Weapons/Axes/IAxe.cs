@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Weapons.Axes
 {
-    public interface IAxe : IWeapon<int>
+    public interface IAxe : IWeapon
     {
     }
 }

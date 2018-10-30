@@ -16,6 +16,7 @@ namespace ServerApp.Data
         public DbSet<Dragon> Dragons { get; set; }
         public DbSet<Hero>   Heroes  { get; set; }
         public DbSet<Hit>    Hits    { get; set; }
+        public DbSet<Weapon> Weapons { get; set; }
 
         public GameDbContext(DbContextOptions options) : base(options)
         {
@@ -36,6 +37,7 @@ namespace ServerApp.Data
             base.OnModelCreating(modelBuilder);
 
             this.SetModelsConfigurations(modelBuilder);
+            this.SetModelsSeeds         (modelBuilder);
         }
 
         protected void SetModelsConfigurations(ModelBuilder modelBuilder)
@@ -44,6 +46,11 @@ namespace ServerApp.Data
                         .ApplyConfiguration(new HeroConfiguration  ())
                         .ApplyConfiguration(new WeaponConfiguration())
                         .ApplyConfiguration(new HeroConfiguration  ());
+        }
+
+        protected void SetModelsSeeds(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new WeaponSeeds());
         }
     }
 }

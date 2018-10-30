@@ -5,14 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerApp.Models.Characters
-{
-    public interface ICharacter : IModel
+{    
+    public interface ICharacter : IModel<int>
     {
-        string Name   { get; set; }
-    }
-
-    public interface ICharacter<TId> : IModel<TId>, ICharacter where TId : IComparable<TId>
-    {
-
+        string Name { get; set; }
     }
 }

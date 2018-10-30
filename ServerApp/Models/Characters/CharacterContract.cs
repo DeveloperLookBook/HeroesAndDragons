@@ -41,7 +41,7 @@ namespace ServerApp.Models.Characters
             if (paramValue.IsNull      (          )) { throw new ArgumentNullException(Messages.Get(Key.NameIsNull                 ), paramName);}
             if (paramValue.IsEmpty     (          )) { throw new ArgumentException    (Messages.Get(Key.NameIsEmpty                ), paramName);}
             if (paramValue.Trimed      (          )) { throw new ArgumentException    (Messages.Get(Key.NameIsNotTrimed            ), paramName);}
-            if (paramValue.HasMaxLemgth(20        )) { throw new ArgumentException    (Messages.Get(Key.NameLengthIsGreaterThen20  ), paramName);}
+            if (paramValue.HasMaxLength(20        )) { throw new ArgumentException    (Messages.Get(Key.NameLengthIsGreaterThen20  ), paramName);}
             if (paramValue.HasMinLength(4         )) { throw new ArgumentException    (Messages.Get(Key.NameLengthIsLessThen4      ), paramName);}
             if (HasDisallowedSeparators(paramValue)) { throw new ArgumentException    (Messages.Get(Key.NameHasDisallowedSeparators), paramName);}
             if (HasDisallowedLetters   (paramValue)) { throw new ArgumentException    (Messages.Get(Key.NameHasDisallowedLetters   ), paramName);}

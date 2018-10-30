@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Weapons
 {
-    [NotMapped]
     public enum WeaponType
     {
-        Axe,
-        Crossbow,
-        Knife,
-        Rapier,
-        Sword,
-        Shield
+        Axe      = 1,
+        Crossbow = 2,
+        Knife    = 3,
+        Rapier   = 4,
+        Sword    = 5,
+        Shield   = 6
     }
 }

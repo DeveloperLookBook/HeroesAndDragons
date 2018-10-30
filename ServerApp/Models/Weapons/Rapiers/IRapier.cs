@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Weapons.Rapiers
 {
-    public interface IRapier : IWeapon<int>
+    public interface IRapier : IWeapon
     {
     }
 }

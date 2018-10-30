@@ -15,16 +15,16 @@ namespace ServerApp.Models.Characters.Dragons
         {
             NameIsNotSentenceCased,
             NameContainsNumbers,
-            LivesNumberIsLess0,
-            LivesNumberIsGreater100,
+            HealthIsLess0,
+            HealthIsGreater100,
         }
 
         static DragonContract()
         {
             Messages.Add(Key.NameIsNotSentenceCased , "First letter in the Dragon name must be uppercased.");
-            Messages.Add(Key.NameContainsNumbers    , "Dragon Name mustn't contain numbers.");
-            Messages.Add(Key.LivesNumberIsLess0     , "Dragon Name length mustn't be less then 0.");
-            Messages.Add(Key.LivesNumberIsGreater100, "Dragon Name length mustn't be greater then 100.");
+            Messages.Add(Key.NameContainsNumbers    , "Dragon Name mustn't contain numbers."               );
+            Messages.Add(Key.HealthIsLess0          , "Dragon Health mustn't be less then 0."              );
+            Messages.Add(Key.HealthIsGreater100     , "Dragon Health mustn't be greater then 100."         );
         }
 
         public void Name(string paramName, string paramValue, out string result)
@@ -37,8 +37,8 @@ namespace ServerApp.Models.Characters.Dragons
 
         public void LivesNumber(string paramName, short paramValue, out short result)
         {
-            if (paramValue < 0  ) { throw new ArgumentException(Messages.Get(Key.LivesNumberIsLess0     )); }
-            if (paramValue > 100) { throw new ArgumentException(Messages.Get(Key.LivesNumberIsGreater100)); }
+            if (paramValue < 0  ) { throw new ArgumentException(Messages.Get(Key.HealthIsLess0     )); }
+            if (paramValue > 100) { throw new ArgumentException(Messages.Get(Key.HealthIsGreater100)); }
 
             result = paramValue;
         }

@@ -1,4 +1,5 @@
 ﻿using ServerApp.Models.Characters;
+using ServerApp.Models.Characters.Dragons;
 using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Weapons;
 using System;
@@ -13,20 +14,20 @@ namespace ServerApp.Models.Hits
     {
         #region FIELDS
 
-        private Character _source  ;
-        private Character _target  ;
-        private Weapon    _weapon  ;
-        private short     _strength;
+        private Hero   _hero    ;
+        private Dragon _dragon  ;
+        private Weapon _weapon  ;
+        private short  _strength;
 
         #endregion
 
 
         #region PROPERTIES
 
-        public Character  Source   => this._source  ;
-        public Character  Target   => this._target  ;
-        public Weapon     Weapon   => this._weapon  ;
-        public short      Strength => this._strength;
+        public Hero   Hero     => this._hero    ;
+        public Dragon Dragon   => this._dragon  ;
+        public Weapon Weapon   => this._weapon  ;
+        public short  Strength => this._strength;
 
         [NotMapped]
         public static HitContract Contract => new HitContract();
@@ -36,10 +37,10 @@ namespace ServerApp.Models.Hits
 
         #region CONSTRUCTORS
 
-        public Hit(ICharacter source, ICharacter target, IWeapon weapon, short strength, DateTime created) : base(created)
+        public Hit(IHero hero, IDragon dragon, IWeapon weapon, short strength, DateTime created) : base(created)
         {
-            Contract.Source  (nameof(source  ), source  , out this._source  );
-            Contract.Target  (nameof(target  ), target  , out this._target  );
+            Contract.Source  (nameof(hero    ), hero    , out this._hero    );
+            Contract.Target  (nameof(dragon  ), dragon  , out this._dragon  );
             Contract.Weapon  (nameof(weapon  ), weapon  , out this._weapon  );
             Contract.Strength(nameof(strength), strength, out this._strength);
         }

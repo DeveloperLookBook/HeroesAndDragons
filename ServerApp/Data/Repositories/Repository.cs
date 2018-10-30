@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ServerApp.Data.Requests;
+using ServerApp.Models.Characters.Heroes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServerApp.Data.Repositories
 {
-    public class Repository<TModel> where TModel : class, Models.IModel
+    public abstract class Repository<TModel> : IRepository<TModel> where TModel : class, Models.IModel
     {
         #region FIELDS
 
@@ -30,40 +33,47 @@ namespace ServerApp.Data.Repositories
         public Repository(GameDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.Models  = this.Context.Set<TModel>();
-            
+            this.Models  = this.Context.Set<TModel>();            
         }
 
         #endregion
 
 
-        #region METHODS
+        #region METHODS              
 
-        /// <summary>
-        /// Request builder factory method.
-        /// </summary>
-        /// <returns>Request builder instance.</returns>
-        protected RequestBuilder<TModel> CreateRequestBuilder() 
-        {
-            return new RequestBuilder<TModel>(this.Models);
-        }        
+        public IQueryable<TModel> Request() => this.Models;
 
-        public RequestBuilder<TModel> Request()
+        public void Add   (TModel model)
         {
-            return this.CreateRequestBuilder();
+            Models.Add(model);
+            Context.SaveChanges());
+
+            return this;
         }
-
-        public void Create()
+        public void Add   (IEnumerable<TModel> models)
         {
-
+            this.Models.AddRange(models);
+            this.Context.SaveChanges();
         }
-        public void Delete()
+        public void Remove(TModel model)
         {
-
+            this.Models.Remove(model);
+            this.Context.SaveChanges();
         }
-        public void Update()
+        public void Remove(IEnumerable<TModel> models)
         {
-
+            this.Models.RemoveRange(models);
+            this.Context.SaveChanges();
+        }
+        public void Update(TModel model)
+        {
+            this.Models.Update(model);
+            this.Context.SaveChanges();
+        }
+        public void Update(IEnumerable<TModel> models)
+        {
+            this.Models.UpdateRange(models);
+            this.Context.SaveChanges();
         }
 
         #endregion

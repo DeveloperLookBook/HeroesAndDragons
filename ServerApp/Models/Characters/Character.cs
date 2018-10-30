@@ -8,7 +8,8 @@ using ServerApp.Models.Weapons;
 
 namespace ServerApp.Models.Characters
 {
-    public abstract class Character : Model<Guid>, ICharacter<Guid>
+    [NotMapped]
+    public abstract class Character : Model<int>, ICharacter
     {
         #region PROPERTIES
 

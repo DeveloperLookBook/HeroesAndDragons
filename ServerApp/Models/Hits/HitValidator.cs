@@ -12,8 +12,8 @@ namespace ServerApp.Models.Hits
     {
         public HitValidator()
         {
-            RuleFor     (h => h.Source  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.SourceIsNull       ));
-            RuleFor     (h => h.Target  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.TargetIsNull       ));
+            RuleFor     (h => h.Hero    ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.HeroIsNull       ));
+            RuleFor     (h => h.Dragon  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.DragonIsNull       ));
             RuleFor     (h => h.Weapon  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.WeaponIsNull       ));
             RuleFor<int>(h => h.Strength).LessThan   (1  ).WithMessage(HitContract.Messages.Get(HitContract.Key.StrengthLessThen1  ));
             RuleFor<int>(h => h.Strength).GreaterThan(100).WithMessage(HitContract.Messages.Get(HitContract.Key.StrengthMoreThen100));

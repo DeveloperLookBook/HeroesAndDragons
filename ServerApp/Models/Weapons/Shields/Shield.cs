@@ -7,5 +7,6 @@ namespace ServerApp.Models.Weapons.Shields
 {
     public class Shield : Weapon, IShield
     {
+        
     }
 }

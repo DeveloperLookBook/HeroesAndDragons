@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Characters.Dragons
 {
-    public interface IDragon: ICharacter<Guid>
+    public interface IDragon: ICharacter
     {
-        short LivesNumber { get; set; }
+        short Health { get; set; }
     }
 }

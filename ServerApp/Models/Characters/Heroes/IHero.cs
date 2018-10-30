@@ -3,7 +3,7 @@ using System;
 
 namespace ServerApp.Models.Characters.Heroes
 {
-    public interface IHero : ICharacter<Guid>
+    public interface IHero : ICharacter
     {
         Weapon Weapon { get; set; }
     }

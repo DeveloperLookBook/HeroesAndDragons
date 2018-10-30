@@ -7,8 +7,6 @@ namespace ServerApp.Models.Weapons.Rapiers
 {
     public class Rapier : Weapon, IRapier
     {
-        public Rapier(short strength, DateTime created) : base(strength, created)
-        {
-        }
+        
     }
 }

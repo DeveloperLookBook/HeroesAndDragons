@@ -14,6 +14,7 @@ namespace ServerApp.Models.Weapons
         {
             base.Configure(builder);            
 
+            builder.Property(w => w.Name    ).HasField("_name"    ).IsRequired().HasMaxLength(20);
             builder.Property(w => w.Strength).HasField("_strength");
         }
     }

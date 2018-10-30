@@ -1,4 +1,5 @@
-﻿using ServerApp.Extencions;
+﻿using ServerApp.Data;
+using ServerApp.Extencions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,27 +12,16 @@ namespace ServerApp.Models.Weapons
     {
         #region FIELDS
 
-        private readonly short  _strength;
+        short  _strength;
+        string _name;
 
         #endregion
 
 
         #region PROPERTIES
 
+        public string Name     => this._name;
         public short  Strength => this._strength;
-
-        [NotMapped]
-        private static WeaponContract  Contract => new WeaponContract();
-
-        #endregion
-
-
-        #region CONSTRUCTORS
-
-        public Weapon(short strength, DateTime created) : base(created)
-        {
-            Contract.Strength(nameof(strength), strength, out this._strength);
-        }
 
         #endregion
     }

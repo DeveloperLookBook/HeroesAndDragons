@@ -11,15 +11,15 @@ namespace ServerApp.Models.Characters.Dragons
         #region FIELDS
 
         private string _name;
-        private short  _livesNumber;
+        private short  _health;
 
         #endregion
 
 
         #region PROPERTIES
 
-        public override string Name        { get => this._name       ; set => Contract.Name       (nameof(Name       ), value, out this._name       ); }
-        public          short  LivesNumber { get => this._livesNumber; set => Contract.LivesNumber(nameof(LivesNumber), value, out this._livesNumber); }
+        public override string Name   { get => this._name  ; set => Contract.Name       (nameof(value), value, out this._name  ); }
+        public          short  Health { get => this._health; set => Contract.LivesNumber(nameof(value), value, out this._health); }
 
         [NotMapped]
         private static  DragonContract Contract => new DragonContract();
@@ -27,12 +27,9 @@ namespace ServerApp.Models.Characters.Dragons
         #endregion
 
 
-        #region CONSTRUCTORA
+        #region CONSTRUCTORS
 
-        public Dragon(string name, short livesNumber, DateTime created) : base(name, created)
-        {
-            this.LivesNumber = livesNumber;
-        }
+        public Dragon(string name, short health, DateTime created) : base(name, created) => this.Health = health;
 
         #endregion
     }

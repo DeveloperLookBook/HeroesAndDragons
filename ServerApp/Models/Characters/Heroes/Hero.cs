@@ -23,7 +23,7 @@ namespace ServerApp.Models.Characters.Heroes
         public override string Name
         {
             get => this._name;
-            set => Contract.Name  (nameof(Name  ), value, out this._name);            
+            set => Contract.Name  (nameof(Name  ), value, out this._name );            
         }
 
         public          Weapon Weapon

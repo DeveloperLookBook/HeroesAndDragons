@@ -11,8 +11,8 @@ namespace ServerApp.Models
     {
         #region FIELDS
 
-        private TId      _id;
-        private DateTime _created;
+        TId      _id;
+        DateTime _created = DateTime.Now;
 
         #endregion        
 
@@ -21,13 +21,6 @@ namespace ServerApp.Models
         public TId      Id        => this._id;
                object   IModel.Id => this._id;
         public DateTime Created   => this._created;
-
-        #endregion
-
-
-        #region CONSTRUCTORS
-
-        protected Model(DateTime created) => this._created = created;
 
         #endregion
     }

@@ -7,6 +7,8 @@ namespace ServerApp.Extencions
 {
     public static class BoolExtencion
     {
+        public static bool IsTrue(this bool value) => (value == true);
+
         /// <summary>
         /// Runs action if boolean value is True.
         /// </summary>
@@ -14,7 +16,7 @@ namespace ServerApp.Extencions
         /// <param name="action">Action that must be done if boolean value is True.</param>
         public static void Then(this bool value, Action action)
         {
-            if (value) { action(); }
+            if (value.IsTrue()) { action(); }
         }
     }
 }

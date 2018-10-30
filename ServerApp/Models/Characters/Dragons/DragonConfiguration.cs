@@ -14,8 +14,8 @@ namespace ServerApp.Models.Characters.Dragons
         {
             base.Configure(builder);
 
-            builder.Property(d => d.Name       ).HasField("_name"       ).IsRequired().HasMaxLength(20);
-            builder.Property(d => d.LivesNumber).HasField("_livesNumber");
+            builder.Property(d => d.Name  ).HasField("_name"       ).IsRequired().HasMaxLength(20);
+            builder.Property(d => d.Health).HasField("_health");
         }
     }
 }

@@ -15,9 +15,9 @@ namespace ServerApp.Models.Characters.Dragons
                 .Must(n => n.SentenceCased()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameIsNotSentenceCased))
                 .Must(n => n.HasNumbers   ()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameContainsNumbers   ));
 
-            RuleFor<int>(d => d.LivesNumber)
-                .LessThan   (0  ).WithMessage(DragonContract.Messages.Get(DragonContract.Key.LivesNumberIsLess0     ))
-                .GreaterThan(100).WithMessage(DragonContract.Messages.Get(DragonContract.Key.LivesNumberIsGreater100));
+            RuleFor<int>(d => d.Health)
+                .LessThan   (0  ).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsLess0     ))
+                .GreaterThan(100).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsGreater100));
         }
     }
 }

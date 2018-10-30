@@ -7,6 +7,7 @@ namespace ServerApp.Models.Weapons
 {
     public interface IWeapon : IModel<int>
     {
-        short Strength { get; }
+        string Name     { get; }
+        short  Strength { get; }
     }
 }

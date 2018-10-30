@@ -11,7 +11,7 @@ namespace ServerApp.Extencions
         public static bool   IsNull              (this string value) => (value is null);
         public static bool   IsEmpty             (this string value) => (value == String.Empty);
 
-        public static bool   HasMaxLemgth        (this string value, int limit) => (value.Length <= limit);
+        public static bool   HasMaxLength        (this string value, int limit) => (value.Length <= limit);
         public static bool   HasMinLength        (this string value, int limit) => (value.Length >= limit);
 
         public static bool   IsMatch             (this string value, string pattern, RegexOptions options)

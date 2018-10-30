@@ -1,4 +1,6 @@
 ﻿using ServerApp.Models.Characters;
+using ServerApp.Models.Characters.Dragons;
+using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Weapons;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,9 @@ namespace ServerApp.Models.Hits
 {
     public interface IHit : IModel<Guid>
     {
-        Character Source   { get; }
-        Character Target   { get; }
-        Weapon    Weapon   { get; }
-        short     Strength { get; }
+        Hero   Hero     { get; }
+        Dragon Dragon   { get; }
+        Weapon Weapon   { get; }
+        short  Strength { get; }
     }
 }

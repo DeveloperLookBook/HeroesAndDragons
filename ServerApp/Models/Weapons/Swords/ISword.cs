@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Weapons.Swords
 {
-    public interface ISword : IWeapon<int>
+    public interface ISword : IWeapon
     {
     }
 }

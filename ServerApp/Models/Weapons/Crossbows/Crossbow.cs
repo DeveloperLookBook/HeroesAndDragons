@@ -7,8 +7,6 @@ namespace ServerApp.Models.Weapons.Crossbows
 {
     public class Crossbow : Weapon, ICrossbow
     {
-        public Crossbow(short strength, DateTime created) : base(strength, created)
-        {
-        }
+
     }
 }
