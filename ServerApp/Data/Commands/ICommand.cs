@@ -1,0 +1,7 @@
+﻿namespace ServerApp.Data.Commands
+{
+    public interface ICommand
+    {
+        void Execute();
+    }
+}

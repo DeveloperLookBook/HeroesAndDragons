@@ -6,9 +6,12 @@ using ServerApp.Models.Characters;
 using ServerApp.Models.Characters.Dragons;
 using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Weapons;
+using ServerApp.Paginations;
+using ServerApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +22,23 @@ namespace ServerApp.Extencions
     {
 
         #region MODEL REQUESTS
+
+        private static IQueryable<TModel>        OrderByAscending <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector)
+            where TModel : IModel
+        {
+            return queryable.OrderBy(keySelector);
+        }        
+        public  static IQueryable<TModel>        OrderBy          <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector, OrderingStrategy ordering = OrderingStrategy.Ascending) where TModel : IModel
+        {
+            switch (ordering)
+            {
+                case OrderingStrategy.Ascending : return queryable.OrderByAscending(keySelector);
+                case OrderingStrategy.Descending: return queryable.OrderByDescending(keySelector);
+                default                         : return queryable.OrderByDescending(keySelector);
+            }
+        }
+
+
         private static Task<IEnumerable<TModel>> ToEnumerableAsync     <TModel>(this IQueryable<TModel> queryable)
         {
             return Task.Run(() => queryable.AsEnumerable());
@@ -47,41 +67,7 @@ namespace ServerApp.Extencions
             count = queryable.Count();
 
             return queryable;
-        }
-        private static IQueryable<TModel>        OrderByCreationDateAsc<TModel>(this IQueryable<TModel> queryable) where TModel : class, IModel
-        {
-            return (from m in queryable orderby m.Created ascending select m);
-        }
-        private static IQueryable<TModel>        OrderByCreationDateAsc<TModel>(this IQueryable<TModel> queryable, out IEnumerable<TModel> models) where TModel : class, IModel
-        {
-            return queryable.OrderByCreationDateAsc().RetriveEnumerable(out models);
-        }
-        private static IQueryable<TModel>        OrderByCreationDateDes<TModel>(this IQueryable<TModel> queryable) where TModel : class, IModel
-        {
-            return (from m in queryable orderby m.Created descending select m);
-        }
-        private static IQueryable<TModel>        OrderByCreationDateDes<TModel>(this IQueryable<TModel> queryable, out IEnumerable<TModel> models) where TModel : class, IModel
-        {
-            return queryable.OrderByCreationDateDes().RetriveEnumerable(out models);
-        }
-        public  static IQueryable<TModel>        OrderByCreationDate   <TModel>(this IQueryable<TModel> queryable, OrderingStrategy option) where TModel : class, IModel
-        {
-            switch (option)
-            {
-                case OrderingStrategy.Ascending : return queryable.OrderByCreationDateAsc();
-                case OrderingStrategy.Descending: return queryable.OrderByCreationDateDes();
-
-                default: throw new ArgumentException("Option doesn't exist.", nameof(option));
-            }
-        }
-        public  static IQueryable<TModel>        OrderByCreationDate   <TModel>(this IQueryable<TModel> queryable, OrderingStrategy option, out IEnumerable<TModel>       models) where TModel : class, IModel
-        {
-            return queryable.OrderByCreationDate(option).RetriveEnumerable(out models);
-        }
-        public  static IQueryable<TModel>        OrderByCreationDate   <TModel>(this IQueryable<TModel> queryable, OrderingStrategy option, out Task<IEnumerable<TModel>> models) where TModel : class, IModel
-        {
-            return queryable.OrderByCreationDate(option).RetriveEnumerableAsync(out models);
-        }                                                 
+        }        
         public  static TModel                    FindById              <TModel>(this IQueryable<TModel> queryable, int id) where TModel : class, IModel<int>
         {
             return (from c in queryable where (c.Id == id) select c).FirstOrDefault();
@@ -169,42 +155,7 @@ namespace ServerApp.Extencions
         public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, out Task<IEnumerable<TCharacter>> characters, SearchStrategy strategy = SearchStrategy.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
         {
             return queryable.FindByName(name, strategy, ignoreCase).RetriveEnumerableAsync(out characters);
-        }      
-        private static IQueryable<TCharacter> OrderByNameAsc       <TCharacter>(this IQueryable<TCharacter> queryable) where TCharacter : class, ICharacter
-        {
-            return (from c in queryable orderby c.Name ascending select c);
-        }
-        private static IQueryable<TCharacter> OrderByNameAsc       <TCharacter>(this IQueryable<TCharacter> queryable, out IEnumerable<TCharacter> characters) where TCharacter : class, ICharacter
-        {
-            return queryable.OrderByNameAsc().RetriveEnumerable(out characters);
-        }
-        private static IQueryable<TCharacter> OrderByNameDes       <TCharacter>(this IQueryable<TCharacter> queryable) where TCharacter : class, ICharacter
-        {
-            return (from c in queryable orderby c.Name descending select c);
-        }
-        private static IQueryable<TCharacter> OrderByNameDes       <TCharacter>(this IQueryable<TCharacter> queryable, out IEnumerable<TCharacter> characters) where TCharacter : class, ICharacter
-        {
-            return queryable.OrderByNameDes().RetriveEnumerable(out characters);
-        }
-        public  static IQueryable<TCharacter> OrderByName          <TCharacter>(this IQueryable<TCharacter> queryable, OrderingStrategy option) where TCharacter : class, ICharacter
-        {
-            switch (option)
-            {
-                case OrderingStrategy.Ascending : return queryable.OrderByNameAsc();
-                case OrderingStrategy.Descending: return queryable.OrderByNameDes();
-
-                default: throw new ArgumentException("Option doesn't exist.", nameof(option));
-            }
-        }
-        public  static IQueryable<TCharacter> OrderByName          <TCharacter>(this IQueryable<TCharacter> queryable, OrderingStrategy option, out IEnumerable<TCharacter> characters) where TCharacter : class, ICharacter
-        {
-            return queryable.OrderByName(option).RetriveEnumerable(out characters);
-        }
-        public  static IQueryable<TCharacter> OrderByName          <TCharacter>(this IQueryable<TCharacter> queryable, OrderingStrategy option, out Task<IEnumerable<TCharacter>> characters) where TCharacter : class, ICharacter
-        {
-            return queryable.OrderByName(option).RetriveEnumerableAsync(out characters);
-        }
-                                                                   
+        }                                                                                 
         public  static bool                   HaveNamesEqualTo     <TCharacter>(this IQueryable<TCharacter> queryable, string name) where TCharacter : class, ICharacter
         {
             TCharacter character = queryable.NameEqualTo(name).FirstOrDefault();
@@ -227,71 +178,80 @@ namespace ServerApp.Extencions
             return queryable.HaveNamesEqualTo(name);
         }
 
+
         #endregion
-        
+
+
+
+        #region HEROE REQUESTS
+
+        public  static View<HeroViewModel> ToHeroModelView<THero>(this IQueryable<THero> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where THero : class, IHero
+        {
+            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
+
+            var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
+                           select new HeroViewModel
+                           {
+                               Id = h.Id,
+                               Name = h.Name,
+                               Created = h.Created,
+                               Weapon = new WeaponViewModel()
+                               {
+                                   Id = h.Weapon.Id,
+                                   Name = h.Weapon.Name,
+                                   Strength = h.Weapon.Strength
+                               }
+                           }).ToList();
+
+            return new View<HeroViewModel>(models, @params);
+        }
+
+        #endregion
+
 
 
         #region DRAGON REQUESTS        
 
-        public  static IQueryable<TDragon> Alive           <TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Alive             <TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
         {
             return (from d in queryable where (d.Health > 0) select d);
         }
-        public  static IQueryable<TDragon> Alive           <TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Alive             <TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
         {
             return queryable.Alive().RetriveEnumerable(out dragons);
         }
-        public  static IQueryable<TDragon> Alive           <TDragon>(this IQueryable<TDragon> queryable, out Task<IEnumerable<TDragon>> dragons) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Alive             <TDragon>(this IQueryable<TDragon> queryable, out Task<IEnumerable<TDragon>> dragons) where TDragon : class, IDragon
         {
             return queryable.Alive().RetriveEnumerableAsync(out dragons);
         }
-        public  static IQueryable<TDragon> Dead            <TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Dead              <TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
         {
             return (from d in queryable where (d.Health <= 0) select d);
         }
-        public  static IQueryable<TDragon> Dead            <TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Dead              <TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
         {
             return queryable.Dead().RetriveEnumerable(out dragons);
         }
-        public  static IQueryable<TDragon> Dead            <TDragon>(this IQueryable<TDragon> queryable, out Task<IEnumerable<TDragon>> dragons) where TDragon : class, IDragon
+        public  static IQueryable<TDragon> Dead              <TDragon>(this IQueryable<TDragon> queryable, out Task<IEnumerable<TDragon>> dragons) where TDragon : class, IDragon
         {
             return queryable.Dead().RetriveEnumerableAsync(out dragons);
         }
 
-        private static IQueryable<TDragon> OrderByHealthAsc<TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
+        public static View<DragonViewModel> ToDragonModelView<TDragon>(this IQueryable<TDragon> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where TDragon : class, IDragon
         {
-            return (from d in queryable orderby d.Health ascending select d);
-        }
-        private static IQueryable<TDragon> OrderByHealthAsc<TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
-        {
-            return queryable.OrderByHealthAsc().RetriveEnumerable(out dragons);
-        }
-        private static IQueryable<TDragon> OrderByHealthDes<TDragon>(this IQueryable<TDragon> queryable) where TDragon : class, IDragon
-        {
-            return (from d in queryable orderby d.Health descending select d);
-        }
-        private static IQueryable<TDragon> OrderByHealthDes<TDragon>(this IQueryable<TDragon> queryable, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
-        {
-            return queryable.OrderByHealthDes().RetriveEnumerable(out dragons);
-        }
-        public  static IQueryable<TDragon> OrderByHealth   <TDragon>(this IQueryable<TDragon> queryable, OrderingStrategy strategy) where TDragon : class, IDragon
-        {
-            switch (strategy)
-            {
-                case OrderingStrategy.Ascending : return queryable.OrderByHealthAsc();
-                case OrderingStrategy.Descending: return queryable.OrderByHealthDes();
+            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
-                default: throw new ArgumentException("Option doesn't exist.", nameof(strategy));
-            }
-        }
-        public  static IQueryable<TDragon> OrderByHealth   <TDragon>(this IQueryable<TDragon> queryable, OrderingStrategy strategy, out IEnumerable<TDragon> dragons) where TDragon : class, IDragon
-        {
-            return queryable.OrderByHealth(strategy).RetriveEnumerable(out dragons);
-        }
-        public  static IQueryable<TDragon> OrderByHealth   <TDragon>(this IQueryable<TDragon> queryable, OrderingStrategy strategy, out Task<IEnumerable<TDragon>> dragons) where TDragon : class, IDragon
-        {
-            return queryable.OrderByHealth(strategy).RetriveEnumerableAsync(out dragons);
-        }
+            var models = (from d in queryable.Skip(@params.Skip()).Take(@params.PageSize)
+                          select new DragonViewModel
+                          {
+                              Id = d.Id,
+                              Name = d.Name,
+                              Health = d.Health,
+                              Created = d.Created,
+                          }).ToList();
+
+            return new View<DragonViewModel>(models, @params);
+        }        
 
         #endregion
 
@@ -360,41 +320,7 @@ namespace ServerApp.Extencions
         public  static Task<TWeapon>       GetSwordSingletonAsync   <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
         {
             return queryable.FindByEnumAsync(WeaponType.Sword);
-        }
-        private static IQueryable<TWeapon> OrderedByStrengthAsc     <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return (from w in queryable orderby w.Strength ascending select w);
-        }
-        private static IQueryable<TWeapon> OrderedByStrengthAsc     <TWeapon>(this IQueryable<TWeapon> queryable, out IEnumerable<TWeapon> weapons) where TWeapon : class, IWeapon
-        {
-            return queryable.OrderedByStrengthAsc().RetriveEnumerable(out weapons);
-        }
-        private static IQueryable<TWeapon> OrderedByStrengthDes     <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return (from w in queryable orderby w.Strength descending select w);
-        }
-        private static IQueryable<TWeapon> OrderedByStrengthDes     <TWeapon>(this IQueryable<TWeapon> queryable, out IEnumerable<TWeapon> weapons) where TWeapon : class, IWeapon
-        {
-            return queryable.OrderedByStrengthDes().RetriveEnumerable(out weapons);
-        }
-        public  static IQueryable<TWeapon> OrderedByStrength        <TWeapon>(this IQueryable<TWeapon> queryable, OrderingStrategy strategy) where TWeapon : class, IWeapon
-        {
-            switch (strategy)
-            {
-                case OrderingStrategy.Ascending : return queryable.OrderedByStrengthAsc();
-                case OrderingStrategy.Descending: return queryable.OrderedByStrengthDes();
-
-                default: throw new ArgumentException("Ordering strategy doesn't exist.", nameof(strategy));
-            }
-        }
-        public  static IQueryable<TWeapon> OrderedByStrength        <TWeapon>(this IQueryable<TWeapon> queryable, OrderingStrategy strategy, out IEnumerable<TWeapon> weapons) where TWeapon : class, IWeapon
-        {
-            return queryable.OrderedByStrength(strategy).RetriveEnumerable(out weapons);
-        }
-        public  static IQueryable<TWeapon> OrderedByStrength        <TWeapon>(this IQueryable<TWeapon> queryable, OrderingStrategy strategy, out Task<IEnumerable<TWeapon>> weapons) where TWeapon : class, IWeapon
-        {
-            return queryable.OrderedByStrength(strategy).RetriveEnumerableAsync(out weapons);
-        }
+        }        
 
         #endregion
     }

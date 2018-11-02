@@ -32,7 +32,7 @@ namespace ServerApp.Models.Characters.Heroes
             set => Contract.Weapon(nameof(Weapon), value, out this._weapon);
         }
         
-        public string Token
+        public          string Token
         {
             get;
             set;
