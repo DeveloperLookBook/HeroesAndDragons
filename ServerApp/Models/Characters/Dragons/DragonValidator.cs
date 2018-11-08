@@ -13,11 +13,11 @@ namespace ServerApp.Models.Characters.Dragons
         {
             RuleFor(d => d.Name)
                 .Must(n => n.SentenceCased()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameIsNotSentenceCased))
-                .Must(n => n.HasNumbers   ()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameContainsNumbers   ));
+                .Must(n => n.HasNoNumbers ()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameContainsNumbers   ));
 
             RuleFor<int>(d => d.Health)
-                .LessThan   (0  ).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsLess0     ))
-                .GreaterThan(100).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsGreater100));
+                .GreaterThanOrEqualTo(0 ).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsLess0     ))
+                .LessThanOrEqualTo   (10).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsGreater100));
         }
     }
 }

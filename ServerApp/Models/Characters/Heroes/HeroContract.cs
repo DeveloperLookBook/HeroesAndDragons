@@ -32,7 +32,7 @@ namespace ServerApp.Models.Characters.Heroes
 
         public void Name  (string paramName, string paramValue, out string result)
         {
-            if      (paramName.HasPuncuation()) { throw new ArgumentException(Messages.Get(Key.NameHasPuncuation), paramName); }
+            if      (paramName.HasPunctuation()) { throw new ArgumentException(Messages.Get(Key.NameHasPuncuation), paramName); }
             else if (paramName.HasMarks     ()) { throw new ArgumentException(Messages.Get(Key.NameHasMarks     ), paramName); }
             else if (paramName.HasSymbols   ()) { throw new ArgumentException(Messages.Get(Key.NameHasSymbols   ), paramName); }
             else if (paramName.HasControls  ()) { throw new ArgumentException(Messages.Get(Key.NameHasControls  ), paramName); }

@@ -7,6 +7,8 @@ namespace ServerApp.Models.Weapons.Knifes
 {
     public class Knife : Weapon, IKnive
     {
-        
+        public Knife() : base((int)WeaponType.Knife, "Knife", 8)
+        {
+        }
     }
 }

@@ -14,14 +14,14 @@ namespace ServerApp.Models.Weapons
         public WeaponValidator()
         {
             RuleFor(w => w.Name)
-                .NotNull      (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNull               ))
-                .NotEmpty     (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsEmtpy              ))
-                .MaximumLength(20).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameLengthIsGreaterThen20))
-                .Must(n => n.Trimed()).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNotTrimed));
+                .NotNull          (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNull               ))
+                .NotEmpty         (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsEmtpy              ))
+                .MaximumLength    (20).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameLengthIsGreaterThen20))
+                .Must(n => n.Trimed()).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNotTrimed          ));
 
             RuleFor<int>(w => w.Strength)
-                .LessThan   (1  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthLessThen1  ))
-                .GreaterThan(100).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthMoreThen100));
+                .GreaterThanOrEqualTo(1  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthLessThen1  ))
+                .LessThanOrEqualTo   (100).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthMoreThen100));
         }
     }
 }

@@ -24,5 +24,17 @@ namespace ServerApp.Models.Weapons
         public short  Strength => this._strength;
 
         #endregion
+
+
+        #region CONSTRUCTORS
+
+        protected Weapon(int id, string name, short strength)
+        {
+            this.Id        = id;
+            this._name     = name;
+            this._strength = strength;
+        }
+
+        #endregion
     }
 }

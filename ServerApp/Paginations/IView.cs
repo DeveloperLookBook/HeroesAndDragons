@@ -5,11 +5,11 @@ namespace ServerApp.Paginations
 {
     public interface IView
     {
-        IViewParams      Params { get; }
-        List<IViewModel> Models { get; }
+        IViewParams  Params { get; }
+        List<object> Models { get; }
     }
 
-    public interface IView<TViewModel> : IView where TViewModel : class, IViewModel
+    public interface IView<TViewModel> : IView where TViewModel : class
     {
         new List<TViewModel> Models { get; }
     }

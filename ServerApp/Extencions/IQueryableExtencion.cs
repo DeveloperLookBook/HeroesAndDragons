@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServerApp.Data;
-using ServerApp.Data.Requests;
+﻿using ServerApp.Data.Services.Helpers;
 using ServerApp.Models;
 using ServerApp.Models.Characters;
 using ServerApp.Models.Characters.Dragons;
 using ServerApp.Models.Characters.Heroes;
+using ServerApp.Models.Hits;
 using ServerApp.Models.Weapons;
 using ServerApp.Paginations;
 using ServerApp.ViewModels;
+using ServerApp.ViewModels.Characters;
+using ServerApp.ViewModels.Characters.Dragons;
+using ServerApp.ViewModels.Characters.Heroes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +25,13 @@ namespace ServerApp.Extencions
 
         #region MODEL REQUESTS
 
-        private static IQueryable<TModel>        OrderByAscending <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector)
-            where TModel : IModel
+        public  static IQueryable<TModel>        OrderByAsc            <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector) where TModel : IModel
         {
             return queryable.OrderBy(keySelector);
         }        
-        public  static IQueryable<TModel>        OrderBy          <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector, OrderingStrategy ordering = OrderingStrategy.Ascending) where TModel : IModel
+        public  static IQueryable<TModel>        OrderByDes            <TModel, TKey>(this IQueryable<TModel> queryable, Expression<Func<TModel, TKey>> keySelector) where TModel : IModel
         {
-            switch (ordering)
-            {
-                case OrderingStrategy.Ascending : return queryable.OrderByAscending(keySelector);
-                case OrderingStrategy.Descending: return queryable.OrderByDescending(keySelector);
-                default                         : return queryable.OrderByDescending(keySelector);
-            }
+            return queryable.OrderByDescending(keySelector);
         }
 
 
@@ -123,36 +119,46 @@ namespace ServerApp.Extencions
         {
             return (from c in queryable where (string.Compare(c.Name, name, ignoreCase) < 0) select c);
         }
-        private static IQueryable<TCharacter> NameStrictlyLessThan <TCharacter>(this IQueryable<TCharacter> queryable, string name, out IEnumerable<TCharacter> characters, bool ignoreCase = false) where TCharacter : class, ICharacter
+        private static IQueryable<TCharacter> NameLessThan         <TCharacter>(this IQueryable<TCharacter> queryable, string name, out IEnumerable<TCharacter> characters, bool ignoreCase = false) where TCharacter : class, ICharacter
         {
             return queryable.NameLessThan(name, ignoreCase).RetriveEnumerable(out characters);
         }
-        public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, SearchStrategy strategy = SearchStrategy.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
+
+        private static IQueryable<TCharacter> NameLessGreaterOrEqualTo<TCharacter>(this IQueryable<TCharacter> queryable, string name, bool ignoreCase = false) where TCharacter : class, ICharacter
+        {
+            return (from c in queryable
+                    where (string.Compare(c.Name, name, ignoreCase) <  0) || 
+                          (string.Compare(c.Name, name, ignoreCase) >  0) ||
+                          (string.Compare(c.Name, name, ignoreCase) == 0)
+                    select c);
+        }
+
+        public static IQueryable<TCharacter>  FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, SearchType strategy = SearchType.AllMatches, bool ignoreCase = false) where TCharacter : class, ICharacter
         {
             switch (strategy)
             {
-                case SearchStrategy.Сomprehensive:
+                case SearchType.AllMatches   : return queryable.NameLessGreaterOrEqualTo(name, ignoreCase);                
+                case SearchType.StratsWith   : return queryable.NameStartsWith          (name, ignoreCase);
+                case SearchType.Greater      : return queryable.NameGreaterThan         (name, ignoreCase);
+                case SearchType.Less         : return queryable.NameLessThan            (name, ignoreCase);
+                case SearchType.Equal        : return queryable.NameEqualTo             (name, ignoreCase);
+                case SearchType.Сomprehensive:
 
                     var options = (ignoreCase) ? RegexOptions.Multiline | RegexOptions.IgnoreCase : RegexOptions.Multiline;
 
-                    return from c in queryable
-                           where ( (Regex.IsMatch(c.Name, $@"\A{  name.Escape()}", options)) || 
-                                   (Regex.IsMatch(name  , $@"\A{c.Name.Escape()}", options)) )
-                           select c;
-
-                case SearchStrategy.StratsWith: return queryable.NameStartsWith (name, ignoreCase);
-                case SearchStrategy.Greater   : return queryable.NameGreaterThan(name, ignoreCase);
-                case SearchStrategy.Less      : return queryable.NameLessThan   (name, ignoreCase);
-                case SearchStrategy.Equal     : return queryable.NameEqualTo    (name, ignoreCase);
+                    return (from c in queryable
+                            where ((Regex.IsMatch(c.Name, $@"\A{  name.Escape()}\z", options)) ||
+                                   (Regex.IsMatch(  name, $@"\A{c.Name.Escape()}\z", options)))
+                            select c);
 
                 default: throw new ArgumentException("Selected strategy doesn't exist.", nameof(strategy));
             }
         }                                                       
-        public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, out IEnumerable<TCharacter> characters, SearchStrategy strategy = SearchStrategy.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
+        public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, out IEnumerable<TCharacter> characters, SearchType strategy = SearchType.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
         {
             return queryable.FindByName(name, strategy, ignoreCase).RetriveEnumerable(out characters);
         }       
-        public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, out Task<IEnumerable<TCharacter>> characters, SearchStrategy strategy = SearchStrategy.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
+        public  static IQueryable<TCharacter> FindByName           <TCharacter>(this IQueryable<TCharacter> queryable, string name, out Task<IEnumerable<TCharacter>> characters, SearchType strategy = SearchType.Equal, bool ignoreCase = false) where TCharacter : class, ICharacter
         {
             return queryable.FindByName(name, strategy, ignoreCase).RetriveEnumerableAsync(out characters);
         }                                                                                 
@@ -178,16 +184,47 @@ namespace ServerApp.Extencions
             return queryable.HaveNamesEqualTo(name);
         }
 
-
         #endregion
 
 
 
         #region HEROE REQUESTS
 
-        public  static View<HeroViewModel> ToHeroModelView<THero>(this IQueryable<THero> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where THero : class, IHero
+        public static IQueryable<THero>   FilterBy       <THero>(this IQueryable<THero> queryable, HeroesFilter filter) 
+            where THero : class, IHero
         {
-            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
+            var heroes = queryable;
+
+            switch (filter)
+            {
+                case HeroesFilter.All: return heroes;
+
+                default:               return heroes;
+            }
+        }
+        public static IQueryable<THero>   OrderBy        <THero>(this IQueryable<THero> queryable, HeroesOrdering ordering, OrderType order)
+            where THero : class, IHero
+        {
+            var heroes = queryable;
+
+            switch (ordering)
+            {
+                case HeroesOrdering.ByName           when order == OrderType.Ascending : return heroes.OrderByAsc(h => h.Name           );
+                case HeroesOrdering.ByName           when order == OrderType.Descending: return heroes.OrderByDes(h => h.Name           );
+                case HeroesOrdering.ByCreated        when order == OrderType.Ascending : return heroes.OrderByAsc(h => h.Created        );
+                case HeroesOrdering.ByCreated        when order == OrderType.Descending: return heroes.OrderByDes(h => h.Created        );
+                case HeroesOrdering.ByWeaponName     when order == OrderType.Ascending : return heroes.OrderByAsc(h => h.Weapon.Name    );
+                case HeroesOrdering.ByWeaponName     when order == OrderType.Descending: return heroes.OrderByDes(h => h.Weapon.Name    );
+                case HeroesOrdering.ByWeaponStrength when order == OrderType.Ascending : return heroes.OrderByAsc(h => h.Weapon.Strength);
+                case HeroesOrdering.ByWeaponStrength when order == OrderType.Descending: return heroes.OrderByDes(h => h.Weapon.Strength);
+
+                default:                                                                 return heroes.OrderByDes(h => h.Created        );
+            }
+        }
+        public static View<HeroViewModel> ToHeroModelView<THero>(this IQueryable<THero> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
+            where THero : class, IHero
+        {
+            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);            
 
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
                            select new HeroViewModel
@@ -208,6 +245,74 @@ namespace ServerApp.Extencions
 
         #endregion
 
+
+        #region HITS REQUESTS
+
+        public static IQueryable<THit>   FilterBy<THit>(this IQueryable<THit> queryable, HeroHitsFilter filter) where THit : class, IHit
+        {
+            var hits = queryable;
+
+            switch (filter)
+            {
+                case HeroHitsFilter.All: return hits;
+
+                default:                 return hits;
+            }
+        }
+        
+        public static IQueryable<THit>   OrderBy        <THit>(this IQueryable<THit> queryable, HitsOrdering ordering, OrderType order) 
+            where THit : class, IHit
+        {
+            var hits = queryable;
+
+            switch (ordering)
+            {
+                case HitsOrdering.ByTargetName     when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Target.Name    );
+                case HitsOrdering.ByTargetName     when OrderType.Descending == order: return hits.OrderByDes(h => h.Target.Name    );
+                case HitsOrdering.BySourceName     when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Source.Name    );
+                case HitsOrdering.BySourceName     when OrderType.Descending == order: return hits.OrderByDes(h => h.Source.Name    );
+                case HitsOrdering.ByWeaponName     when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Weapon.Name    );
+                case HitsOrdering.ByWeaponName     when OrderType.Descending == order: return hits.OrderByDes(h => h.Weapon.Name    );
+                case HitsOrdering.ByWeaponStrength when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Weapon.Strength);
+                case HitsOrdering.ByWeaponStrength when OrderType.Descending == order: return hits.OrderByDes(h => h.Weapon.Strength);
+                case HitsOrdering.ByStrength       when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Strength       );
+                case HitsOrdering.ByStrength       when OrderType.Descending == order: return hits.OrderByDes(h => h.Strength       );
+                case HitsOrdering.ByCreated        when OrderType.Ascending  == order: return hits.OrderByAsc(h => h.Created        );
+                case HitsOrdering.ByCreated        when OrderType.Descending == order: return hits.OrderByDes(h => h.Created        );
+
+                default:                                                               return hits.OrderByDes(h => h.Created        );
+            }
+        }
+
+        public static View<HeroHitsViewModel> ToHeroHitsModelView<THit>(this IQueryable<THit> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
+            where THit : class, IHit
+        {
+            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
+
+            var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
+                          select new HeroHitsViewModel
+                          {
+                              Id = h.Id,
+                              Target = new CharacterViewModel()
+                              {
+                                  Id   = h.Target.Id,
+                                  Name = h.Target.Name,
+                                  Type = h.Target.GetType().Name,
+                              },
+                              Weapon = new WeaponViewModel()
+                              {
+                                  Id       = h.Weapon.Id,
+                                  Name     = h.Weapon.Name,
+                                  Strength = h.Weapon.Strength,
+                              },
+                              Strength = h.Strength,
+                              Created  = h.Created,
+                          }).ToList();
+
+            return new View<HeroHitsViewModel>(models, @params);
+        }
+
+        #endregion
 
 
         #region DRAGON REQUESTS        
@@ -237,6 +342,38 @@ namespace ServerApp.Extencions
             return queryable.Dead().RetriveEnumerableAsync(out dragons);
         }
 
+
+        public static IQueryable<TDragon>  FilterBy         <TDragon>(this IQueryable<TDragon> queryable, DragonsFilter filter) 
+            where TDragon : class, IDragon
+        {
+            var dragons = queryable;
+
+            switch (filter)
+            {
+                case DragonsFilter.All  : return dragons;
+                case DragonsFilter.Alive: return dragons.Alive();
+                case DragonsFilter.Dead : return dragons.Dead() ;
+
+                default:                  return dragons;
+            }
+        }
+        public static IQueryable<TDragon>  OrderBy          <TDragon>(this IQueryable<TDragon> queryable, DragonsOrdering ordering, OrderType order) 
+            where TDragon : class, IDragon
+        {
+            var dragons = queryable;
+            
+            switch (ordering)
+            {
+                case DragonsOrdering.ByName    when (order == OrderType.Ascending ): return dragons.OrderByAsc(d => d.Name   );
+                case DragonsOrdering.ByName    when (order == OrderType.Descending): return dragons.OrderByDes(d => d.Name   );
+                case DragonsOrdering.ByHealth  when (order == OrderType.Ascending ): return dragons.OrderByAsc(d => d.Health );
+                case DragonsOrdering.ByHealth  when (order == OrderType.Descending): return dragons.OrderByDes(d => d.Health );
+                case DragonsOrdering.ByCreated when (order == OrderType.Ascending ): return dragons.OrderByAsc(d => d.Created);
+                case DragonsOrdering.ByCreated when (order == OrderType.Descending): return dragons.OrderByDes(d => d.Created);
+
+                default:                                                             return dragons.OrderByDes(h => h.Created);
+            } 
+        }
         public static View<DragonViewModel> ToDragonModelView<TDragon>(this IQueryable<TDragon> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where TDragon : class, IDragon
         {
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);

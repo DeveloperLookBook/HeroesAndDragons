@@ -1,12 +1,17 @@
 ﻿using System;
-using System.Linq.Expressions;
 using ServerApp.Data.UnitOfWorks;
-using ServerApp.Models;
+using ServerApp.Paginations;
+using ServerApp.ViewModels;
 
 namespace ServerApp.Data.Receivers
 {
-    public interface IViewManager<TModel> where TModel : class, IModel
+    public interface IViewManager<TViewModel, TFilteringStrategy, TOrderingSource>
+        where TViewModel : class, IViewModel
+        where TFilteringStrategy : Enum
+        where TOrderingSource : Enum
     {
-        void Run<TKey>(string commandCode, IGameContext context, Expression<Func<TModel, TKey>> keySelector, OrderingStrategy ordering, int pageSize, int pageNumber);
+        IView<TViewModel> View { get; }
+
+        void Run(string commandCode, IGameContext gameContext, TFilteringStrategy viewFilteringStrategy, TOrderingSource viewOrderingSource, Order viewOrderingStrategy, int viewPageSize, int viewPageNumber);
     }
 }

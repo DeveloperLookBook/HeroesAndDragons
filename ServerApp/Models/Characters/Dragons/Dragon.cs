@@ -29,7 +29,7 @@ namespace ServerApp.Models.Characters.Dragons
 
         #region CONSTRUCTORS
 
-        public Dragon(string name, short health, DateTime created) : base(name, created) => this.Health = health;
+        public Dragon(string name, short health) : base(name) => this.Health = health;
 
         #endregion
     }

@@ -2,17 +2,17 @@
 {
     public interface IViewParams
     {
-        bool HasNextPage     { get; }
+        bool HasNextPage { get; }
         bool HasPreviousPage { get; }
-        int  MaxPageNumber   { get; set; }
-        int  MaxPageSize     { get; }
-        int  MinPageNumber   { get; }
-        int  MinPageSize     { get; }
-        int  PageNumber      { get; set; }
-        int  PageSize        { get; set; }
-
-        int  Skip();
+        int MaxPageNumber { get; }
+        int MaxPageSize { get; }
+        int MinPageNumber { get; }
+        int MinPageSize { get; }
+        int ModelsCount { get; }
+        int PageNumber { get; set; }
+        int PageSize { get; set; }
 
         IViewParams Clone();
+        int Skip();
     }
 }

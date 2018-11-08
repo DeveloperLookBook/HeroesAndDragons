@@ -9,17 +9,15 @@ namespace ServerApp.Paginations
 {
     public class ViewParams : IViewParams
     {
-        public int  MaxPageSize     { get;      }
-        public int  MinPageSize     { get;      }
-        public int  MaxPageNumber   { get; set; }
-        public int  MinPageNumber   { get;      }
-        public int  PageSize        { get; set; }
-        public int  PageNumber      { get; set; }
-
-        public bool HasPreviousPage { get;      }
-        public bool HasNextPage     { get;      }
-
-        private int ModelsCount     { get;      }
+        public int  MaxPageSize     { get; protected set; } = 100;
+        public int  MinPageSize     { get; protected set; } = 1;
+        public int  MaxPageNumber   { get; protected set; }
+        public int  MinPageNumber   { get; protected set; } = 1;
+        public int  PageSize        { get;           set; } = 1;
+        public int  PageNumber      { get;           set; } = 1;
+        public bool HasPreviousPage { get; protected set; } = false;
+        public bool HasNextPage     { get; protected set; } = false;
+        public int  ModelsCount     { get; protected set; } = 0;
 
 
         public ViewParams(int modelsCount, int pageNumber, int maxPageSize, int minPageSize, int pageSize)
@@ -36,6 +34,7 @@ namespace ServerApp.Paginations
             this.HasPreviousPage = this.CurrentPageHasPreviousPage(pageNumber, this.MinPageNumber);
             this.HasNextPage     = this.CurrentPageHasNextPage    (pageNumber, this.MaxPageNumber);
         }
+
 
         private int  CountMaxPageNumber        (int pageSize  , int modelsCount)
         {
@@ -57,7 +56,7 @@ namespace ServerApp.Paginations
         {
             return (maxPageNumber > pageNumber + 1);
         }
-        public int   Skip()
+        public  int  Skip()
         {
             int skip = this.PageSize;
 

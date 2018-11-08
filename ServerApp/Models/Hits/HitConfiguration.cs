@@ -14,8 +14,8 @@ namespace ServerApp.Models.Hits
         {
             base.Configure(builder);
 
-            builder.Property(h => h.Hero    ).HasField("_hero"    ).IsRequired();
-            builder.Property(h => h.Dragon  ).HasField("_dragon"  ).IsRequired();
+            builder.Property(h => h.Source  ).HasField("_source"  ).IsRequired();
+            builder.Property(h => h.Target  ).HasField("_target"  ).IsRequired();
             builder.Property(h => h.Weapon  ).HasField("_weapon"  ).IsRequired();
             builder.Property(h => h.Strength).HasField("_strength");            
         }

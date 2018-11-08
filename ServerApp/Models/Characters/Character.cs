@@ -8,7 +8,6 @@ using ServerApp.Models.Weapons;
 
 namespace ServerApp.Models.Characters
 {
-    [NotMapped]
     public abstract class Character : Model<int>, ICharacter
     {
         #region PROPERTIES
@@ -23,11 +22,11 @@ namespace ServerApp.Models.Characters
 
         #region CONSTRUCTORS        
 
-        protected Character(string name, DateTime created) : base(created)
+        protected Character(string name)
         {
-            Contract.Name(nameof(name), name, out var result);
+            Contract.Name(nameof(name), name, out name);
 
-            this.Name = result;
+            this.Name = name;
         }
 
         #endregion

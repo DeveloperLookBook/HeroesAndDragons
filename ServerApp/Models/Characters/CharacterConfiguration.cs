@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ServerApp.Models.Characters
 {
     [NotMapped]
-    public class CharacterConfiguration<TModel> : ModelConfiguration<TModel, Guid> where TModel : Character
+    public class CharacterConfiguration<TModel> : ModelConfiguration<TModel, int> 
+        where TModel : Character
     {
         public override void Configure(EntityTypeBuilder<TModel> builder)
         {

@@ -11,7 +11,7 @@ namespace ServerApp.Models
         DateTime Created { get; }
     }
 
-    public interface IModel<out TId>: IModel where TId : IComparable<TId>
+    public interface IModel<TId>: IModel where TId : IComparable<TId>
     {
         new TId  Id      { get; }
     }

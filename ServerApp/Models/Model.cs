@@ -18,8 +18,8 @@ namespace ServerApp.Models
 
         #region PROPERTIES
 
-        public TId      Id        => this._id;
-               object   IModel.Id => this._id;
+        public TId      Id        { get => this._id; protected set => this._id = value; }
+               object   IModel.Id => this.Id;
         public DateTime Created   => this._created;
 
         #endregion

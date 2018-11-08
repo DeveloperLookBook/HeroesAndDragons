@@ -12,10 +12,10 @@ namespace ServerApp.Models.Characters.Heroes
         public HeroValidator()
         {
             RuleFor(h => h.Name)
-                .Must(n => n.HasPuncuation()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasPuncuation))
-                .Must(n => n.HasMarks     ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasMarks     ))
-                .Must(n => n.HasSymbols   ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasSymbols   ))
-                .Must(n => n.HasControls  ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasControls  ));
+                .Must(n => n.HasNoPunctuation()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasPuncuation))
+                .Must(n => n.HasNoMarks      ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasMarks     ))
+                .Must(n => n.HasNoSymbols    ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasSymbols   ))
+                .Must(n => n.HasNoControls   ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasControls  ));
 
             RuleFor(h => h.Weapon)
                 .NotNull().WithMessage(HeroContract.Messages.Get(HeroContract.Key.WeaponIsNull));

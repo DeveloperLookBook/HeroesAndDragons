@@ -4,6 +4,12 @@ using ServerApp.Models.Characters.Dragons;
 using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Hits;
 using ServerApp.Models.Weapons;
+using ServerApp.Models.Weapons.Axes;
+using ServerApp.Models.Weapons.Crossbows;
+using ServerApp.Models.Weapons.Knifes;
+using ServerApp.Models.Weapons.Rapiers;
+using ServerApp.Models.Weapons.Shields;
+using ServerApp.Models.Weapons.Swords;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +56,7 @@ namespace ServerApp.Data
 
         protected void SetModelsSeeds(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new WeaponSeeds());
+            modelBuilder.ApplyConfiguration(new WeaponSeed());
         }
     }
 }

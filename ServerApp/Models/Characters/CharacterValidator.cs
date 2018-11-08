@@ -11,8 +11,8 @@ namespace ServerApp.Models.Characters
     [NotMapped]
     public abstract class CharacterValidator<TModel> : AbstractValidator<TModel> where TModel : Character
     {
-        private bool HasDisallowedSeparators(string value) => value.IsMatch(@"\A[\P{Z} ]*\z"     );
-        private bool HasDisallowedLetters   (string value) => value.IsMatch(@"\A[\P{L}a-zA-Z]*\z");
+        private bool HasNoDisallowedSeparators(string value) => value.IsMatch(@"\A[\P{Z} ]*\z"     );
+        private bool HasNoDisallowedLetters   (string value) => value.IsMatch(@"\A[\P{L}a-zA-Z]*\z");
 
         public CharacterValidator()
         {
@@ -23,8 +23,8 @@ namespace ServerApp.Models.Characters
                 .MaximumLength(20             ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameLengthIsGreaterThen20))
                 .MinimumLength(4              ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameLengthIsLessThen4    ))
 
-                .Must(n => HasDisallowedSeparators(n)).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedSeparators))
-                .Must(n => HasDisallowedLetters   (n)).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedLetters   ));
+                .Must(HasNoDisallowedSeparators).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedSeparators))
+                .Must(HasNoDisallowedLetters   ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedLetters   ));
         }
     }
 }

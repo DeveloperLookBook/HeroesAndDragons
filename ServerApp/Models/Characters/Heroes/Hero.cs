@@ -46,7 +46,7 @@ namespace ServerApp.Models.Characters.Heroes
 
         #region CONSTRUCTORS
 
-        public Hero(string name, Weapon weapon, DateTime created) : base(name, created)
+        public Hero(string name, Weapon weapon) : base(name)
         {
             this.Weapon = weapon;          
         }

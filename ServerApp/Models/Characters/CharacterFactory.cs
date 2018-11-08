@@ -1,0 +1,52 @@
+﻿using ServerApp.Models.Characters.Dragons;
+using ServerApp.Models.Characters.Heroes;
+using ServerApp.Models.Weapons;
+using ServerApp.ViewModels;
+using ServerApp.ViewModels.Heroes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+namespace ServerApp.Models.Characters
+{
+    public interface ICharacterCreator
+    {
+        Hero   Hero  (string name);
+        Dragon Dragon();
+    }
+
+
+    public delegate TCharacter CharacterFactorySelectorFunc<TCharacter>(ICharacterCreator creator) where TCharacter : class, ICharacter;
+
+
+    [NotMapped]
+    public static class CharacterFactory
+    {
+        private class Creator : ICharacterCreator
+        {
+            static public DragonHealthGenerator DragonHealthGenerator => new DragonHealthGenerator();
+            static public DragonNameGenerator   DragonNameGenerator   => new DragonNameGenerator  ();
+
+
+            public Hero   Hero  (string name) => new Hero  (name, WeaponFactory.CreateRandom());
+            public Dragon Dragon(           ) => new Dragon(DragonNameGenerator.Generate(), DragonHealthGenerator.Generate());
+
+
+            public Hero   Hero(HeroSigninViewModel viewModel) => this.Hero(viewModel.Name);
+        }
+
+
+        static private Creator InstanceCreator => new Creator();
+
+
+        static public TCharacter Create<TCharacter>(CharacterFactorySelectorFunc<TCharacter> selector) where TCharacter : class, ICharacter
+        {
+            if (selector is null) { throw new ArgumentNullException(nameof(selector)); }
+
+            return selector(InstanceCreator);
+        }        
+    }    
+}

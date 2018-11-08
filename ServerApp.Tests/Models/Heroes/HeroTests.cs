@@ -13,7 +13,6 @@ namespace ServerApp.Tests.Models.Heroes
         [SetUp]
         public void SetUpTests()
         {
-            this.Hero = new Hero();
         }
 
         [TestCase(null, ExpectedResult = typeof(ArgumentNullException))]

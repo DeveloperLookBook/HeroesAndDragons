@@ -8,6 +8,8 @@ namespace ServerApp.Models.Weapons.Axes
 {
     public class Axe : Weapon, IAxe
     {
-        
+        public Axe() : base((int)WeaponType.Axe, "Axe", 18)
+        {
+        }
     }
 }
