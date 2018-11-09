@@ -1,4 +1,5 @@
-﻿using ServerApp.Data.Commands.Payloads;
+﻿using Microsoft.AspNetCore.Mvc;
+using ServerApp.Data.Commands.Payloads;
 using ServerApp.Data.Handlers;
 using ServerApp.Data.Repositories;
 using ServerApp.Data.Services.Helpers;
@@ -14,6 +15,8 @@ namespace ServerApp.Data.Commands
 
     public static class CommandFactory
     {
+        #region COMMAND CREATOR
+
         private class CommandCreator : ICommandCreator
         {
             private RepositoryFactory RepositoryFactory { get; }
@@ -26,41 +29,83 @@ namespace ServerApp.Data.Commands
                 this.CommandHandler    = new CommandHandler(this.RepositoryFactory);
             }
 
+
             #region CREATE COMMANDS -------------------------------------------------------------------------
 
-            public CreateCommand<CommandHandler, >
+            public CreateCommand<CommandHandler, CreateHeroPayload> CreateHero  (CreateHeroPayload payload)
+            {
+                return new CreateCommand<CommandHandler, CreateHeroPayload>(
+                    CommandType.CreateHero,
+                    CommandHandler,
+                    (command, handler) => handler.CreateHeroAsync(command),
+                    payload);
+            }
+            public CreateCommand<CommandHandler, CreateHitPayload > CreateHit   (CreateHitPayload  payload)
+            {
+                return new CreateCommand<CommandHandler, CreateHitPayload>(
+                    CommandType.CreateHit,
+                    CommandHandler,
+                    (command, handler) => handler.CreateHeroHitAsync(command),
+                    payload);
+            }
+            public CreateCommand<CommandHandler>                    CreateDragon()
+            {
+                return new CreateCommand<CommandHandler>(
+                    CommandType.CreateDragon,
+                    CommandHandler,
+                    (command, handler) => handler.CreateDragonAsync(command));
+            }
 
             #endregion
 
             #region READ COMMANDS ---------------------------------------------------------------------------
 
-            public ReadCommand<CommandHandler, ReadHeroesPayload  > ReadHeroes  (ReadHeroesPayload   payload)
+            public ReadCommand<CommandHandler, ReadHeroByNamePayload  > ReadHeroByNameAndPassword
+            public ReadCommand<CommandHandler, ReadHeroesPayload      > ReadHeroes      (ReadHeroesPayload       payload)
             {
                 return new ReadCommand<CommandHandler, ReadHeroesPayload>(
                     CommandType.ReadHeroes, 
                     CommandHandler,
-                    (command, handler) => handler.HandleAsync(command),
+                    (command, handler) => handler.ReadHeroesAsync(command),
                     payload);
             }
-            public ReadCommand<CommandHandler, ReadDragonsPayload > ReadDragons (ReadDragonsPayload  payload)
-            {
-                return new ReadCommand<CommandHandler, ReadDragonsPayload>(
-                    CommandType.ReadDragons,
-                    CommandHandler,
-                    (command, handler) => handler.HandleAsync(command),
-                    payload);
-            }
-            public ReadCommand<CommandHandler, ReadHeroHitsPayload> ReadHeroHits(ReadHeroHitsPayload payload)
+            public ReadCommand<CommandHandler, ReadHeroHitsPayload    > ReadHeroHits    (ReadHeroHitsPayload     payload)
             {
                 return new ReadCommand<CommandHandler, ReadHeroHitsPayload>(
                     CommandType.ReadHits,
                     CommandHandler,
-                    (command, handler) => handler.HandleAsync(command),
+                    (command, handler) => handler.ReadHeroHitsAsync(command),
+                    payload);
+            }
+            public ReadCommand<CommandHandler, ReadHeroesByNamePayload> ReadHeroesByName(ReadHeroesByNamePayload payload)
+            {
+                return new ReadCommand<CommandHandler, ReadHeroesByNamePayload>(
+                    CommandType.ReadHeroesByName,
+                    CommandHandler,
+                    (command, handler) => handler.ReadHeroesByNameAsync(command),
+                    payload);
+            }
+            public ReadCommand<CommandHandler, ReadDragonsPayload     > ReadDragons     (ReadDragonsPayload      payload)
+            {
+                return new ReadCommand<CommandHandler, ReadDragonsPayload>(
+                    CommandType.ReadDragons,
+                    CommandHandler,
+                    (command, handler) => handler.ReadDragonsAsync(command),
+                    payload);
+            }
+            public ReadCommand<CommandHandler, ReadDragonByIdPayload  > ReadDragonById  (ReadDragonByIdPayload   payload)
+            {
+                return new ReadCommand<CommandHandler, ReadDragonByIdPayload>(
+                    CommandType.ReadDragonById,
+                    CommandHandler,
+                    (command, handler) => handler.ReadDragonByIdAsync(command),
                     payload);
             }
 
             #endregion
         }
+
+        #endregion
 
 
         static private CommandCreator InstanceCreator { get; }

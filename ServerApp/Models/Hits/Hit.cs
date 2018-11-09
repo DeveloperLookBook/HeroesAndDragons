@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Hits
 {
-    public abstract class Hit : Model<Guid>, IHit
+    public class Hit : Model<Guid>, IHit
     {
         #region FIELDS
 

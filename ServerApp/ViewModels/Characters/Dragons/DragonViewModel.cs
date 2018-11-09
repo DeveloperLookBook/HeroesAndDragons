@@ -10,6 +10,6 @@ namespace ServerApp.ViewModels.Characters.Dragons
         public int      Id      { get; set; }
         public string   Name    { get; set; }
         public short    Health  { get; set; }
-        public DateTime Created { get; set; }               
+        public DateTime Created { get; set; }        
     }   
 }

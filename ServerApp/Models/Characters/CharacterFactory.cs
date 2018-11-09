@@ -1,8 +1,7 @@
 ﻿using ServerApp.Models.Characters.Dragons;
 using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Weapons;
-using ServerApp.ViewModels;
-using ServerApp.ViewModels.Heroes;
+using ServerApp.ViewModels.Characters.Heroes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,15 +26,15 @@ namespace ServerApp.Models.Characters
     {
         private class Creator : ICharacterCreator
         {
-            static public DragonHealthGenerator DragonHealthGenerator => new DragonHealthGenerator();
+            static public DragonHealth DragonHealthGenerator => new DragonHealth();
             static public DragonNameGenerator   DragonNameGenerator   => new DragonNameGenerator  ();
 
 
-            public Hero   Hero  (string name) => new Hero  (name, WeaponFactory.CreateRandom());
+            public Hero   Hero  (string name) => new Hero  (name, WeaponFactory.Create(s => s.Random()));
             public Dragon Dragon(           ) => new Dragon(DragonNameGenerator.Generate(), DragonHealthGenerator.Generate());
 
 
-            public Hero   Hero(HeroSigninViewModel viewModel) => this.Hero(viewModel.Name);
+            public Hero   Hero(SigninHeroViewModel viewModel) => this.Hero(viewModel.Name);
         }
 
 

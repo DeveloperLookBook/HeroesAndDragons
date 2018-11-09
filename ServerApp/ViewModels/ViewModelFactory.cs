@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using ServerApp.ViewModels.Dragons;
-using ServerApp.ViewModels.Heroes;
+using ServerApp.ViewModels.Characters.Dragons;
+using ServerApp.ViewModels.Characters.Heroes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,12 @@ namespace ServerApp.ViewModels
 {
     public interface IViewModelCreator
     {
-        DragonViewModel     DragonViewModel    ();
-        HeroSigninViewModel HeroSigninViewModel();
-        SignupHeroViewModel HeroSignupViewModel();
-        HeroViewModel       HeroViewModel      ();
-        WeaponViewModel     WeaponViewModel    ();
+        DragonViewModel           DragonViewModel          ();
+        CreateHeroViewModel       CreateHeroViewModel      ();
+        SigninHeroViewModel       SigninHeroViewModel      ();
+        HeroViewModel             HeroViewModel            ();
+        WeaponViewModel           WeaponViewModel          ();
+        ReadHeroesByNameViewModel ReadHeroesByNameViewModel();
     }
 
 
@@ -26,11 +27,12 @@ namespace ServerApp.ViewModels
     {
         private class Creator : IViewModelCreator
         {
-            public DragonViewModel     DragonViewModel    () => new DragonViewModel    ();
-            public HeroSigninViewModel HeroSigninViewModel() => new HeroSigninViewModel();
-            public SignupHeroViewModel HeroSignupViewModel() => new SignupHeroViewModel();
-            public HeroViewModel       HeroViewModel      () => new HeroViewModel      ();
-            public WeaponViewModel     WeaponViewModel    () => new WeaponViewModel    ();
+            public DragonViewModel           DragonViewModel          () => new DragonViewModel          ();
+            public CreateHeroViewModel       CreateHeroViewModel      () => new CreateHeroViewModel      ();
+            public SigninHeroViewModel       SigninHeroViewModel      () => new SigninHeroViewModel      ();
+            public HeroViewModel             HeroViewModel            () => new HeroViewModel            ();
+            public WeaponViewModel           WeaponViewModel          () => new WeaponViewModel          ();
+            public ReadHeroesByNameViewModel ReadHeroesByNameViewModel() => new ReadHeroesByNameViewModel();
         }
 
 
@@ -47,11 +49,12 @@ namespace ServerApp.ViewModels
         {
             var type = typeof(TViewModel);
 
-            if (type.Equals(typeof(DragonViewModel    ))) return Create(s => s.DragonViewModel    ()) as TViewModel;
-            if (type.Equals(typeof(HeroSigninViewModel))) return Create(s => s.HeroSigninViewModel()) as TViewModel;
-            if (type.Equals(typeof(SignupHeroViewModel))) return Create(s => s.HeroSignupViewModel()) as TViewModel;
-            if (type.Equals(typeof(HeroViewModel      ))) return Create(s => s.HeroViewModel      ()) as TViewModel;
-            if (type.Equals(typeof(WeaponViewModel    ))) return Create(s => s.WeaponViewModel    ()) as TViewModel;
+            if (type.Equals(typeof(DragonViewModel          ))) return Create(s => s.DragonViewModel          ()) as TViewModel;
+            if (type.Equals(typeof(CreateHeroViewModel      ))) return Create(s => s.CreateHeroViewModel      ()) as TViewModel;
+            if (type.Equals(typeof(SigninHeroViewModel      ))) return Create(s => s.SigninHeroViewModel      ()) as TViewModel;
+            if (type.Equals(typeof(HeroViewModel            ))) return Create(s => s.HeroViewModel            ()) as TViewModel;
+            if (type.Equals(typeof(WeaponViewModel          ))) return Create(s => s.WeaponViewModel          ()) as TViewModel;
+            if (type.Equals(typeof(ReadHeroesByNameViewModel))) return Create(s => s.ReadHeroesByNameViewModel()) as TViewModel;
 
             throw new ArgumentException("Selected generic type doesn't exist.");
         }

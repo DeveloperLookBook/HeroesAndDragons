@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ServerApp.Data.Services.Helpers
+namespace ServerApp.Data.Commands.Payloads
 {
-    public enum DragonsFilter
+    public class CreateCommandPayload : ICommandPayload
     {
-        All  ,
-        Alive,
-        Dead 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using ServerApp.ViewModels.Heroes;
+using ServerApp.ViewModels.Characters.Heroes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace ServerApp.ViewModels
 {
     public interface IViewModelValidatorCreator
     {
-        SignupHeroViewModelValidator SignupHeroViewModelValidator();
+        HeroViewModelValidator CreateHeroViewModelValidator();
     }
 
 
@@ -22,7 +22,7 @@ namespace ServerApp.ViewModels
     {
         private class Creator : IViewModelValidatorCreator
         {
-            public SignupHeroViewModelValidator SignupHeroViewModelValidator() => new SignupHeroViewModelValidator();
+            public HeroViewModelValidator CreateHeroViewModelValidator() => new HeroViewModelValidator();
         }
 
 
@@ -39,7 +39,7 @@ namespace ServerApp.ViewModels
         {
             var type = typeof(TViewModel);
 
-            if (type.Equals(typeof(SignupHeroViewModelValidator))) return Create(s => s.SignupHeroViewModelValidator()) as IValidator<TViewModel>;
+            if (type.Equals(typeof(HeroViewModelValidator))) return Create(s => s.CreateHeroViewModelValidator()) as IValidator<TViewModel>;
 
             throw new ArgumentException("Selected generic type doesn't exist.");
         }

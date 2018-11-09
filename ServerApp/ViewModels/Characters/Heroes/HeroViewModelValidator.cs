@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace ServerApp.ViewModels.Characters.Heroes
 {
-    public class SignupHeroViewModelValidator : AbstractValidator<SignupHeroViewModel>, IValidator<SignupHeroViewModel>
+    public class HeroViewModelValidator : AbstractValidator<CreateHeroViewModel>, IValidator<CreateHeroViewModel>
     {
         private bool HasNoDisallowedSeparators(string value) => value.IsMatch(@"\A[\P{Z} ]*\z"     );
         private bool HasNoDisallowedLetters   (string value) => value.IsMatch(@"\A[\P{L}a-zA-Z]*\z");
 
-        public SignupHeroViewModelValidator()
+        public HeroViewModelValidator()
         {
             RuleFor(h => h.Name)
                 .NotNull      (  ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameIsNull               ))

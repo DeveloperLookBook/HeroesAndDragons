@@ -101,14 +101,15 @@ namespace ServerApp.Data.Repositories
         virtual public void Update(TModel              model ) => this.ChangeStateAndSave(model , EntityState.Modified);
         virtual public void Update(IEnumerable<TModel> models) => this.ChangeStateAndSave(models, EntityState.Modified);
 
+
         IQueryable<object> IRepository.Request() => this.Request();
 
-        public void Add   (IEnumerable<object> models) => this.Add   (models as IEnumerable<TModel>);
-        public void Add   (object              model ) => this.Add   (model  as TModel             );
-        public void Remove(IEnumerable<object> models) => this.Remove(models as IEnumerable<TModel>);
-        public void Remove(object              model ) => this.Remove(model  as TModel             );
-        public void Update(IEnumerable<object> models) => this.Update(models as IEnumerable<TModel>);
-        public void Update(object              model ) => this.Update(model  as TModel             );
+        public void Add   (IEnumerable<object> models) => this.Add   ((IEnumerable<TModel>)models);
+        public void Add   (object              model ) => this.Add   ((TModel)model              );
+        public void Remove(IEnumerable<object> models) => this.Remove((IEnumerable<TModel>)models);
+        public void Remove(object              model ) => this.Remove((TModel)model              );
+        public void Update(IEnumerable<object> models) => this.Update((IEnumerable<TModel>)models);
+        public void Update(object              model ) => this.Update((TModel)model              );
 
         #endregion
     }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServerApp.ViewModels.Characters.Heroes
 {
-    public class HeroSigninViewModel : ViewModel
+    public class CreateHeroViewModel : ViewModel
     {
         public string Name { get; set; }       
     }

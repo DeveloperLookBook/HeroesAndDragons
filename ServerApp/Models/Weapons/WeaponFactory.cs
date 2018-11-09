@@ -82,7 +82,9 @@ namespace ServerApp.Models.Weapons
         static public TWeapon Create<TWeapon>(WeaponFactorySelectorFunc<TWeapon> selector)
             where TWeapon : class, IWeapon
         {
+            if (selector is null) { throw new ArgumentNullException(nameof(selector)); }
+
             return selector(InstanceCreator);
         }
-    }   
+    }    
 }

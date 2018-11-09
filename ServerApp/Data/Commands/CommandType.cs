@@ -9,9 +9,11 @@ namespace ServerApp.Data.Commands
     {
         CreateHero,
         ReadHeroes,
+        ReadHeroesByName,
 
         CreateDragon,
         ReadDragons,
+        ReadDragonById,
 
         CreateHit,
         ReadHits,

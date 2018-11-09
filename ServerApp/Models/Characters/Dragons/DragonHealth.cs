@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ServerApp.Models.Characters.Dragons
 {
     [NotMapped]
-    public class DragonHealthGenerator
+    public class DragonHealth
     {
-        static public  short  MinValue      => 1;
+        static public  short  MinValue      => 0;
         static public  short  MaxValue      => 100;
         static private short  StartMinValue => 80;
         static private short  StartMaxValue => 100;

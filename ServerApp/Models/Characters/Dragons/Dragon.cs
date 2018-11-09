@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServerApp.Models.Hits;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -18,8 +19,22 @@ namespace ServerApp.Models.Characters.Dragons
 
         #region PROPERTIES
 
-        public override string Name   { get => this._name  ; set => Contract.Name       (nameof(value), value, out this._name  ); }
-        public          short  Health { get => this._health; set => Contract.LivesNumber(nameof(value), value, out this._health); }
+        public override string Name
+        {
+            get => this._name;
+            set => Contract.Name(nameof(value), value, out this._name  );
+        }
+        public          short  Health
+        {
+            get => this._health;
+            set
+            {
+                var min = DragonHealth.MinValue;
+                var max = DragonHealth.MaxValue;
+
+                this._health = (short)((value < min) ? min : (value > max) ? max : value);
+            }
+        }
 
         [NotMapped]
         private static  DragonContract Contract => new DragonContract();
@@ -31,6 +46,6 @@ namespace ServerApp.Models.Characters.Dragons
 
         public Dragon(string name, short health) : base(name) => this.Health = health;
 
-        #endregion
+        #endregion        
     }
 }

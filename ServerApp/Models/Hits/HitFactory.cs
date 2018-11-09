@@ -14,17 +14,6 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Models.Hits
 {
-    public interface IHitCreator
-    {
-        AxeHit      AxeHit     (Character source, Character target, Weapon weapon);
-        CrossbowHit CrossbowHit(Character source, Character target, Weapon weapon);
-        KnifeHit    KnifeHit   (Character source, Character target, Weapon weapon);
-        RapierHit   RapierHit  (Character source, Character target, Weapon weapon);
-        ShieldHit   ShieldHit  (Character source, Character target, Weapon weapon);
-        SwordHit    SwordHit   (Character source, Character target, Weapon weapon);
-    }
-
-
     public delegate THit HitFactorySelectorFunc<THit>(IHitCreator creator) where THit : class, IHit;
 
 
@@ -36,30 +25,10 @@ namespace ServerApp.Models.Hits
             static private StrengthMultiplier StrengthMultiplier => new StrengthMultiplier();
 
 
-            public AxeHit      AxeHit     (Character source, Character target, Weapon weapon)
+            public Hit Hit (ICharacter source, ICharacter target, IWeapon weapon)
             {
-                return new AxeHit(source, target, weapon, StrengthMultiplier.Value);
-            }
-            public CrossbowHit CrossbowHit(Character source, Character target, Weapon weapon)
-            {
-                return new CrossbowHit(source, target, weapon, StrengthMultiplier.Value);
-            }
-            public KnifeHit    KnifeHit   (Character source, Character target, Weapon weapon)
-            {
-                return new KnifeHit(source, target, weapon, StrengthMultiplier.Value);
-            }
-            public RapierHit   RapierHit  (Character source, Character target, Weapon weapon)
-            {
-                return new RapierHit(source, target, weapon, StrengthMultiplier.Value);
-            }
-            public ShieldHit   ShieldHit  (Character source, Character target, Weapon weapon)
-            {
-                return new ShieldHit(source, target, weapon, StrengthMultiplier.Value);
-            }
-            public SwordHit    SwordHit   (Character source, Character target, Weapon weapon)
-            {
-                return new SwordHit(source, target, weapon, StrengthMultiplier.Value);
-            }
+                return new Hit(source as Character, target as Character, weapon as Weapon, StrengthMultiplier.Value);
+            }            
         }
 
 

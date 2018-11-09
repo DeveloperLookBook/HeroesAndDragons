@@ -5,14 +5,13 @@ namespace ServerApp.Data.Commands
 {    
     public interface IAppCommand
     {
-        CommandType Code    { get; }
-        object      Payload { get; }
+        CommandType Code { get; }
 
-        Task<IActionResult> Execute<TReturn>();
-    }
+        Task<IActionResult> Execute();
+    }    
 
     public interface IAppCommand<TPayload> : IAppCommand
     {
-        new TPayload Payload { get; }
+        TPayload Payload { get; }
     }
 }

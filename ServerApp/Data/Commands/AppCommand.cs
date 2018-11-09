@@ -9,35 +9,36 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Data.Commands
 {
-    public abstract class AppCommand<THandler, TPayload> : IAppCommand<TPayload>
+    public abstract class AppCommand<THandler> : IAppCommand 
         where THandler : class
     {
-        public  CommandType      Code    { get; }
-        private THandler         Handler { get; }
-        public  TPayload         Payload { get; }
-
-        object       IAppCommand.Payload => this.Payload;
-
-        private Func<AppCommand<THandler, TPayload>, THandler, Task<IActionResult>> Resiver { get; }
+        public    CommandType Code      { get; }
+        protected THandler    Handler   { get; }
 
 
-        public AppCommand(
-            CommandType code, 
-            THandler    handler,
-            Func<IAppCommand<TPayload>, THandler, Task<IActionResult>> resiver, 
-            TPayload    payload)
+        public AppCommand(CommandType code, THandler handler)
         {
             if (handler is null) throw new ArgumentNullException(nameof(handler));
-            if (resiver is null) throw new ArgumentNullException(nameof(resiver));
-            if (payload == null) throw new ArgumentNullException(nameof(payload));
 
             this.Code    = code;
             this.Handler = handler;
-            this.Payload = payload;
-            this.Resiver = resiver;
         }
 
 
-        public Task<IActionResult> Execute<TReturn>() => this.Resiver(this, this.Handler);
+        abstract public Task<IActionResult> Execute();
+    }
+
+
+    public abstract class AppCommand<THandler, TPayload> : AppCommand<THandler>, IAppCommand<TPayload>        
+        where THandler : class
+    {
+        public  TPayload Payload { get; }
+
+        public AppCommand(CommandType code, THandler handler, TPayload payload) 
+
+            : base(code, handler)
+        {
+            this.Payload = payload;
+        }
     }
 }

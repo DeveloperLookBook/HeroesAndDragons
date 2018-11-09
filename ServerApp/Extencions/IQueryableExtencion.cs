@@ -229,13 +229,13 @@ namespace ServerApp.Extencions
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
                            select new HeroViewModel
                            {
-                               Id = h.Id,
-                               Name = h.Name,
+                               Id      = h.Id,
+                               Name    = h.Name,
                                Created = h.Created,
-                               Weapon = new WeaponViewModel()
+                               Weapon  = new WeaponViewModel()
                                {
-                                   Id = h.Weapon.Id,
-                                   Name = h.Weapon.Name,
+                                   Id       = h.Weapon.Id,
+                                   Name     = h.Weapon.Name,
                                    Strength = h.Weapon.Strength
                                }
                            }).ToList();
@@ -284,13 +284,13 @@ namespace ServerApp.Extencions
             }
         }
 
-        public static View<HeroHitsViewModel> ToHeroHitsModelView<THit>(this IQueryable<THit> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
+        public static View<HeroHitViewModel> ToHeroHitsModelView<THit>(this IQueryable<THit> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
             where THit : class, IHit
         {
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                          select new HeroHitsViewModel
+                          select new HeroHitViewModel
                           {
                               Id = h.Id,
                               Target = new CharacterViewModel()
@@ -309,7 +309,7 @@ namespace ServerApp.Extencions
                               Created  = h.Created,
                           }).ToList();
 
-            return new View<HeroHitsViewModel>(models, @params);
+            return new View<HeroHitViewModel>(models, @params);
         }
 
         #endregion
