@@ -1,5 +1,5 @@
 ﻿using ServerApp.Data.Commands.Payloads;
-using ServerApp.Data.Handlers;
+using ServerApp.Data.Receivers;
 
 namespace ServerApp.Data.Commands
 {

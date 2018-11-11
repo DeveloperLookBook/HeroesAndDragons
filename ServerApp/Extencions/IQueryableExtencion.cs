@@ -22,6 +22,18 @@ namespace ServerApp.Extencions
 {
     public static class IQueryableExtencion
     {
+        #region GLOBAL
+
+        public static bool IsEmpty<T>   (this IQueryable<T> queryable)
+        {
+            return (queryable.Count() == 0);
+        }
+        public static bool IsNotEmpty<T>(this IQueryable<T> queryable)
+        {
+            return (queryable.Count() > 0);
+        }
+        #endregion
+
 
         #region MODEL REQUESTS
 
@@ -227,18 +239,8 @@ namespace ServerApp.Extencions
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);            
 
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                           select new HeroViewModel
-                           {
-                               Id      = h.Id,
-                               Name    = h.Name,
-                               Created = h.Created,
-                               Weapon  = new WeaponViewModel()
-                               {
-                                   Id       = h.Weapon.Id,
-                                   Name     = h.Weapon.Name,
-                                   Strength = h.Weapon.Strength
-                               }
-                           }).ToList();
+                          select ViewModelFactory.Create(s => s.HeroViewModel(h)))
+                          .ToList();
 
             return new View<HeroViewModel>(models, @params);
         }
@@ -247,8 +249,11 @@ namespace ServerApp.Extencions
 
 
         #region HITS REQUESTS
-
-        public static IQueryable<THit>   FilterBy<THit>(this IQueryable<THit> queryable, HeroHitsFilter filter) where THit : class, IHit
+        public static IQueryable<THit>       SelectHeroHitsById <THit>(this IQueryable<THit> queryable, int heroId) where THit : class, IHit
+        {
+            return (queryable.Where(h => (h.Source.Id == heroId && h.Source.GetType().Equals(typeof(Hero)))));
+        }
+        public static IQueryable<THit>       FilterBy           <THit>(this IQueryable<THit> queryable, HeroHitsFilter filter) where THit : class, IHit
         {
             var hits = queryable;
 
@@ -258,9 +263,8 @@ namespace ServerApp.Extencions
 
                 default:                 return hits;
             }
-        }
-        
-        public static IQueryable<THit>   OrderBy        <THit>(this IQueryable<THit> queryable, HitsOrdering ordering, OrderType order) 
+        }        
+        public static IQueryable<THit>       OrderBy            <THit>(this IQueryable<THit> queryable, HitsOrdering ordering, OrderType order) 
             where THit : class, IHit
         {
             var hits = queryable;
@@ -283,31 +287,14 @@ namespace ServerApp.Extencions
                 default:                                                               return hits.OrderByDes(h => h.Created        );
             }
         }
-
         public static View<HeroHitViewModel> ToHeroHitsModelView<THit>(this IQueryable<THit> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
             where THit : class, IHit
         {
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                          select new HeroHitViewModel
-                          {
-                              Id = h.Id,
-                              Target = new CharacterViewModel()
-                              {
-                                  Id   = h.Target.Id,
-                                  Name = h.Target.Name,
-                                  Type = h.Target.GetType().Name,
-                              },
-                              Weapon = new WeaponViewModel()
-                              {
-                                  Id       = h.Weapon.Id,
-                                  Name     = h.Weapon.Name,
-                                  Strength = h.Weapon.Strength,
-                              },
-                              Strength = h.Strength,
-                              Created  = h.Created,
-                          }).ToList();
+                          select ViewModelFactory.Create(s => s.HeroHitViewModel(h)))
+                          .ToList();
 
             return new View<HeroHitViewModel>(models, @params);
         }
@@ -374,18 +361,13 @@ namespace ServerApp.Extencions
                 default:                                                             return dragons.OrderByDes(h => h.Created);
             } 
         }
-        public static View<DragonViewModel> ToDragonModelView<TDragon>(this IQueryable<TDragon> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where TDragon : class, IDragon
+        public static View<DragonViewModel>ToDragonModelView<TDragon>(this IQueryable<TDragon> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) where TDragon : class, IDragon
         {
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
             var models = (from d in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                          select new DragonViewModel
-                          {
-                              Id = d.Id,
-                              Name = d.Name,
-                              Health = d.Health,
-                              Created = d.Created,
-                          }).ToList();
+                          select ViewModelFactory.Create(s => s.DragonViewModel(d)))
+                          .ToList();
 
             return new View<DragonViewModel>(models, @params);
         }        

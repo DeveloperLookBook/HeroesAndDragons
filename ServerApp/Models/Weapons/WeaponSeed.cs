@@ -18,12 +18,12 @@ namespace ServerApp.Models.Weapons
         public void Configure(EntityTypeBuilder<Weapon> builder)
         {
             builder.HasData(
-                WeaponFactory.Create<Axe>     (),
-                WeaponFactory.Create<Crossbow>(),
-                WeaponFactory.Create<Knife>   (),
-                WeaponFactory.Create<Rapier>  (),
-                WeaponFactory.Create<Shield>  (),
-                WeaponFactory.Create<Sword>   ()
+                WeaponFactory.Create(s => s.Axe     ()),
+                WeaponFactory.Create(s => s.Crossbow()),
+                WeaponFactory.Create(s => s.Knife   ()),
+                WeaponFactory.Create(s => s.Rapier  ()),
+                WeaponFactory.Create(s => s.Shield  ()),
+                WeaponFactory.Create(s => s.Sword   ())
                 );
         }
     }

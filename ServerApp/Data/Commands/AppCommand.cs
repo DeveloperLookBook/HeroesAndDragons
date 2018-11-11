@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServerApp.Data.Handlers;
+using ServerApp.Data.Receivers;
 using ServerApp.Data.Repositories;
 using ServerApp.Models;
 using System;

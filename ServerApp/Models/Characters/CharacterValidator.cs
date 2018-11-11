@@ -17,14 +17,14 @@ namespace ServerApp.Models.Characters
         public CharacterValidator()
         {
             RuleFor(c => c.Name)
-                .NotNull      (               ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameIsNull               ))
-                .NotEmpty     (               ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameIsEmpty              ))
-                .Must         (n => n.Trimed()).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameIsNotTrimed          ))
-                .MaximumLength(20             ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameLengthIsGreaterThen20))
-                .MinimumLength(4              ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameLengthIsLessThen4    ))
+                .NotNull      (               ).WithMessage("Name mustn't be Null.")
+                .NotEmpty     (               ).WithMessage("Name mustn't be Empty.")
+                .Must         (n => n.Trimed()).WithMessage("Name must be Trimmed.")
+                .MaximumLength(20             ).WithMessage("Name Length must be less or equal - 20.")
+                .MinimumLength(4              ).WithMessage("Name Length must be more or equal - 4.")
 
-                .Must(HasNoDisallowedSeparators).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedSeparators))
-                .Must(HasNoDisallowedLetters   ).WithMessage(CharacterContract.Messages.Get(CharacterContract.Key.NameHasDisallowedLetters   ));
+                .Must(HasNoDisallowedSeparators).WithMessage("Name mustn't contain any separator characters except white-spaces")
+                .Must(HasNoDisallowedLetters   ).WithMessage("Name can contain Latin letters only: a-z, A-Z.");
         }
     }
 }

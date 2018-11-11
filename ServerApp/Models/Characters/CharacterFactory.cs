@@ -24,10 +24,10 @@ namespace ServerApp.Models.Characters
     [NotMapped]
     public static class CharacterFactory
     {
-        private class Creator : ICharacterCreator
+        private class CharacterCreator : ICharacterCreator
         {
-            static public DragonHealth DragonHealthGenerator => new DragonHealth();
-            static public DragonNameGenerator   DragonNameGenerator   => new DragonNameGenerator  ();
+            static public DragonHealth        DragonHealthGenerator => new DragonHealth        ();
+            static public DragonNameGenerator DragonNameGenerator   => new DragonNameGenerator ();
 
 
             public Hero   Hero  (string name) => new Hero  (name, WeaponFactory.Create(s => s.Random()));
@@ -38,7 +38,7 @@ namespace ServerApp.Models.Characters
         }
 
 
-        static private Creator InstanceCreator => new Creator();
+        static private CharacterCreator InstanceCreator => new CharacterCreator();
 
 
         static public TCharacter Create<TCharacter>(CharacterFactorySelectorFunc<TCharacter> selector) where TCharacter : class, ICharacter

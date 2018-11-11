@@ -1,6 +1,4 @@
 ﻿using ServerApp.ViewModels;
-using ServerApp.ViewModels.Dragons;
-using ServerApp.ViewModels.Heroes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

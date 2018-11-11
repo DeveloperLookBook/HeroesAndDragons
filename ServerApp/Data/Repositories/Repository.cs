@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ServerApp.Extencions;
 using ServerApp.Models.Characters.Heroes;
+using ServerApp.Models.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,18 +56,23 @@ namespace ServerApp.Data.Repositories
         /// <param name="model">Model instance that should be attached to the DB 
         /// context.</param>
         /// <returns>Returns true if model was attached to the DB context.</returns>
-        protected bool TryToAttach<TAttachableModel>(TAttachableModel model) where TAttachableModel : class, Models.IModel
+        protected bool TryToAttachWeapon(Weapon model)
         {
-            var models     = this.Context.Set<TAttachableModel>();
-            var isAttached = false;
+            var weapon         = this.Context.Set<Weapon>();
+            var isModelExists  = weapon.Where(w =>
+                                       w.Id       == model.Id   && 
+                                       w.Name     == model.Name && 
+                                       w.Strength == w.Strength)
+                                       .IsNotEmpty();
+            var iModelAttached = false;
 
-            if (models.Contains(model))
+            if (isModelExists)
             {
-                models.Attach(model);
-                isAttached = true;
+                weapon.Attach(model);
+                iModelAttached = true;
             }
 
-            return isAttached;
+            return iModelAttached;
         }
 
         private void ChangeState       (TModel              model , EntityState state)

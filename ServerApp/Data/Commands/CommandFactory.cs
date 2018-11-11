@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServerApp.Data.Commands.Payloads;
-using ServerApp.Data.Handlers;
+using ServerApp.Data.Receivers;
 using ServerApp.Data.Repositories;
 using ServerApp.Data.Services.Helpers;
 using System;
@@ -13,20 +13,18 @@ namespace ServerApp.Data.Commands
     public delegate TCommand CommandFactorySelectorFunc<TCommand>(ICommandCreator creator)
         where TCommand : IAppCommand;
 
-    public static class CommandFactory
+    public class CommandFactory
     {
-        #region COMMAND CREATOR
+        #region COMMAND CREATOR - LOCAL CLASS
 
         private class CommandCreator : ICommandCreator
         {
-            private RepositoryFactory RepositoryFactory { get; }
-            private CommandHandler    CommandHandler    { get; }
+            private CommandHandler CommandHandler    { get; }
 
 
-            public CommandCreator(RepositoryFactory factory)
+            public CommandCreator(CommandHandler handler)
             {
-                this.RepositoryFactory = factory ?? throw new ArgumentNullException(nameof(factory));
-                this.CommandHandler    = new CommandHandler(this.RepositoryFactory);
+                this.CommandHandler = handler ?? throw new ArgumentNullException(nameof(handler));
             }
 
 
@@ -60,7 +58,14 @@ namespace ServerApp.Data.Commands
 
             #region READ COMMANDS ---------------------------------------------------------------------------
 
-            public ReadCommand<CommandHandler, ReadHeroByNamePayload  > ReadHeroByNameAndPassword
+            public ReadCommand<CommandHandler, ReadHeroByNamePayload  > ReadHeroByName  (ReadHeroByNamePayload   payload)
+            {
+                return new ReadCommand<CommandHandler, ReadHeroByNamePayload>(
+                    CommandType.ReadHeroeByName,
+                    CommandHandler,
+                    (command, handler) => handler.ReadHeroByNameAsync(command),
+                    payload);
+            }
             public ReadCommand<CommandHandler, ReadHeroesPayload      > ReadHeroes      (ReadHeroesPayload       payload)
             {
                 return new ReadCommand<CommandHandler, ReadHeroesPayload>(
@@ -108,10 +113,25 @@ namespace ServerApp.Data.Commands
         #endregion
 
 
-        static private CommandCreator InstanceCreator { get; }
+        #region PROPERTIES
+
+        private CommandCreator InstanceCreator { get; }
+
+        #endregion
 
 
-        static public TCommand Create<TCommand>(CommandFactorySelectorFunc<TCommand> selector) 
+        #region CONSTRUCTORS
+
+        public CommandFactory(CommandHandler handler)
+        {
+            if (handler is null) throw new ArgumentNullException(nameof(handler));
+
+            this.InstanceCreator = new CommandCreator(handler);
+        }
+
+        #endregion
+
+        public TCommand Create<TCommand>(CommandFactorySelectorFunc<TCommand> selector) 
             where TCommand : IAppCommand
         {
             return selector(InstanceCreator);

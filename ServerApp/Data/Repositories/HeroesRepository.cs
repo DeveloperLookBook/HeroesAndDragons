@@ -15,14 +15,14 @@ namespace ServerApp.Data.Repositories
         {
             foreach (var model in models)
             {
-                this.TryToAttach<Weapon>(model.Weapon);
+                this.TryToAttachWeapon(model.Weapon);
             }
         }
 
 
         public override void Add   (IHero              model )
         {
-            this.TryToAttach<Weapon>(model.Weapon);
+            this.TryToAttachWeapon(model.Weapon);
 
             base.Add(model);
         }
@@ -36,7 +36,7 @@ namespace ServerApp.Data.Repositories
         {
             var weapon = model.Weapon;
 
-            this.TryToAttach<Weapon>(weapon);
+            this.TryToAttachWeapon(weapon);
 
             base.Update(model);
         }
