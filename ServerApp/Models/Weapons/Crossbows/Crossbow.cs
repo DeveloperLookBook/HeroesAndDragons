@@ -7,7 +7,7 @@ namespace ServerApp.Models.Weapons.Crossbows
 {
     public class Crossbow : Weapon, ICrossbow
     {
-        public Crossbow() : base((int)WeaponType.Crossbow, "Crossbow", 15)
+        public Crossbow() : base("Crossbow", 15)
         {
         }
     }

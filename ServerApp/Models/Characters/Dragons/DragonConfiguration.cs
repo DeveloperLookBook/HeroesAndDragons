@@ -12,10 +12,8 @@ namespace ServerApp.Models.Characters.Dragons
     {
         public override void Configure(EntityTypeBuilder<Dragon> builder)
         {
-            base.Configure(builder);
-
-            builder.Property(d => d.Name  ).HasField("_name"       ).IsRequired().HasMaxLength(20);
             builder.Property(d => d.Health).HasField("_health");
+            builder.HasBaseType<Character>();
         }
     }
 }

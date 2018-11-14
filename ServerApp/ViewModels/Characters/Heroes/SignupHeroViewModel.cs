@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ServerApp.ViewModels.Characters.Heroes
 {
-    public class CreateHeroViewModel : ViewModel
+    public class SignupHeroViewModel : ViewModel
     {
-        public string Name { get; set; }       
+        public virtual string Name { get; set; }       
     }
 }

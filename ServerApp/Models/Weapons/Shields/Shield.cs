@@ -7,7 +7,7 @@ namespace ServerApp.Models.Weapons.Shields
 {
     public class Shield : Weapon, IShield
     {
-        public Shield() : base((int)WeaponType.Shield, "Shield", 4)
+        public Shield() : base("Shield", 4)
         {
         }
     }

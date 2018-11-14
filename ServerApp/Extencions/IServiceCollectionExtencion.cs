@@ -16,15 +16,17 @@ using ServerApp.Data.Commands;
 
 namespace ServerApp.Extencions
 {
-    static public class ISericeCollectionExtencion
+    static public class IServiceCollectionExtencion
     {
         static public IServiceCollection AddJwtAuthentication       (this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
+                        options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
+
                             ValidateIssuer           = true,
                             ValidIssuer              = configuration["Jwt:Issuer"  ],
 
@@ -34,14 +36,14 @@ namespace ServerApp.Extencions
                             ValidateLifetime         = true,
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey         = JwtSecurityKeyFactory.Create(configuration["Jwt:Key"])
-                        };
+                        };                        
                     });
 
             return services;
         }
         static public IServiceCollection AddConfigurationService    (this IServiceCollection services, IConfiguration configuration)
         {
-            return services.AddSingleton(configuration);
+            return services.AddSingleton<IConfiguration>(configuration);
         }
         static public IServiceCollection AddInMememoryDbContext     (this IServiceCollection services)
         {
@@ -49,16 +51,32 @@ namespace ServerApp.Extencions
         }
         static public IServiceCollection AddRepositoryFactoryService(this IServiceCollection services)
         {
-            return services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
+            return services.AddScoped<IRepositoryFactory, RepositoryFactory>();
         }
         static public IServiceCollection AddCommandHandlerService   (this IServiceCollection services)
         {
 
-            return services.AddSingleton<CommandHandler, CommandHandler>();
+            return services.AddScoped<CommandHandler, CommandHandler>();
         }
         static public IServiceCollection AddCommandFactoryService   (this IServiceCollection services)
         {
-            return services.AddSingleton<CommandFactory, CommandFactory>();
+            return services.AddScoped<CommandFactory, CommandFactory>();
+        }
+        static public IServiceCollection AddCorsPolicy              (this IServiceCollection services, string name)
+        {
+            if (name.IsNull      ()) { throw new ArgumentNullException(nameof(name)); }
+            if (name.IsEmpty     ()) { throw new ArgumentException    (nameof(name)); }
+            if (name.IsWhiteSpace()) { throw new ArgumentException    (nameof(name)); }
+
+            return services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name,
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
         }
     }
 }

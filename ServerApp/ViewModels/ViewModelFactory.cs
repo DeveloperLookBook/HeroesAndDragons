@@ -23,7 +23,7 @@ namespace ServerApp.ViewModels
         private class ViewModelCreator : IViewModelCreator
         {
             public DragonViewModel           DragonViewModel          () => new DragonViewModel          ();
-            public CreateHeroViewModel       CreateHeroViewModel      () => new CreateHeroViewModel      ();
+            public SignupHeroViewModel       CreateHeroViewModel      () => new SignupHeroViewModel      ();
             public SigninHeroViewModel       SigninHeroViewModel      () => new SigninHeroViewModel      ();
             public HeroViewModel             HeroViewModel            () => new HeroViewModel            ();
             public WeaponViewModel           WeaponViewModel          () => new WeaponViewModel          ();

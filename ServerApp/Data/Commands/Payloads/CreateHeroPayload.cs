@@ -8,9 +8,9 @@ namespace ServerApp.Data.Commands.Payloads
 {
     public class CreateHeroPayload : CreateCommandPayload
     {
-        public CreateHeroViewModel ViewModel { get; }
+        public SignupHeroViewModel ViewModel { get; }
 
-        public CreateHeroPayload(CreateHeroViewModel viewModel)
+        public CreateHeroPayload(SignupHeroViewModel viewModel)
         {
             this.ViewModel = viewModel;
         }        

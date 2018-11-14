@@ -10,25 +10,9 @@ namespace ServerApp.Models.Characters
 {
     public abstract class Character : Model<int>, ICharacter
     {
-        #region PROPERTIES
-
-        public abstract string Name { get; set; }
-
-        [NotMapped]
-        private CharacterContract Contract => new CharacterContract();
-
-        #endregion
+        public string Name { get; set; }
 
 
-        #region CONSTRUCTORS        
-
-        protected Character(string name)
-        {
-            Contract.Name(nameof(name), name, out name);
-
-            this.Name = name;
-        }
-
-        #endregion
+        protected Character(string name) => this.Name = name;
     }
 }

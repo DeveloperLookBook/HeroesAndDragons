@@ -12,13 +12,13 @@ namespace ServerApp.Models.Characters.Heroes
         public HeroValidator()
         {
             RuleFor(h => h.Name)
-                .Must(n => n.HasNoPunctuation()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasPuncuation))
-                .Must(n => n.HasNoMarks      ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasMarks     ))
-                .Must(n => n.HasNoSymbols    ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasSymbols   ))
-                .Must(n => n.HasNoControls   ()).WithMessage(HeroContract.Messages.Get(HeroContract.Key.NameHasControls  ));
+                .Must(n => n.HasNoPunctuation()).WithMessage("Name mustn't contain Punctuation characters.")
+                .Must(n => n.HasNoMarks      ()).WithMessage("Name mustn't contain Nonspacing, Spacing Combining and Enclosing diacritic marks.")
+                .Must(n => n.HasNoSymbols    ()).WithMessage("Name mustn't contain: Math, Currency and Modifier symbols.")
+                .Must(n => n.HasNoControls   ()).WithMessage("Name mustn't contain: Control, Format, Surrogate, Private Use and Not Assigned control characters.");
 
             RuleFor(h => h.Weapon)
-                .NotNull().WithMessage(HeroContract.Messages.Get(HeroContract.Key.WeaponIsNull));
+                .NotNull().WithMessage("Hero Weapon mustn't be Null.");
         }
     }
 }

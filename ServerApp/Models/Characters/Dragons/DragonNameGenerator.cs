@@ -10,49 +10,41 @@ namespace ServerApp.Models.Characters.Dragons
     [NotMapped]
     public class DragonNameGenerator
     {
-        private readonly Random random = new Random();
-
-
-        private DragonName Name   => new DragonName();
-        private Random     Random => this.random;
-
         public string Generate()
         {
-            this.Name.ExpectedLength = this.Random.Next(DragonName.MinLength, 6);
+            var dragonName         = new DragonName();
+            var random             = new Random();
+            var expectedNameLength = random.Next(DragonName.MinLength, 6);
 
-            while (this.Name.ActualLength < this.Name.ExpectedLength)
+            while (dragonName.ActualLength < expectedNameLength)
             {
-                // Create first letter:
+                // Create first letter:                
+                if (dragonName.ActualLength == 0)
                 {
-                    if (this.Name.ActualLength == 0)
+                    if (expectedNameLength % 2 == 0)
                     {
-                        if (this.Name.ExpectedLength % 2 == 0)
-                        {
-                            this.Name.Value = this.Name.Value.AppendRandomLatinVowelLetter();
-                        }
-                        else
-                        {
-                            this.Name.Value = this.Name.Value.AppendRandomLatinConsonantLetter();
-                        }
-
-                        this.Name.Value.ToUpper();
-                    }
-                }
-
-                // Create letter:
-                {
-                    if (this.Name.Value.IsLastLetterLatinConsonant())
-                    {
-                        this.Name.Value = this.Name.Value.AppendRandomLatinVowelLetter();
+                        dragonName.Value = dragonName.Value.AppendRandomLatinVowelLetter();
                     }
                     else
                     {
-                        this.Name.Value = this.Name.Value.AppendRandomLatinConsonantLetter();
+                        dragonName.Value = dragonName.Value.AppendRandomLatinConsonantLetter();
                     }
+
+                    dragonName.Value = dragonName.Value.ToUpper();
+                }                
+
+                // Create letter:                
+                if (dragonName.Value.IsLastLetterLatinConsonant())
+                {
+                    dragonName.Value = dragonName.Value.AppendRandomLatinVowelLetter();
                 }
+                else
+                {
+                    dragonName.Value = dragonName.Value.AppendRandomLatinConsonantLetter();
+                }                
             }            
 
-            return this.Name.Value;
+            return dragonName.Value;
 
         }
     }

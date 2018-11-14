@@ -1,8 +1,9 @@
 ﻿using ServerApp.Models.Characters;
+using ServerApp.Models.Characters.Heroes;
 using ServerApp.Models.Weapons;
 using ServerApp.Models.Weapons.Axes;
 using ServerApp.Models.Weapons.Crossbows;
-using ServerApp.Models.Weapons.Knifes;
+using ServerApp.Models.Weapons.Knives;
 using ServerApp.Models.Weapons.Rapiers;
 using ServerApp.Models.Weapons.Shields;
 using ServerApp.Models.Weapons.Swords;
@@ -27,7 +28,13 @@ namespace ServerApp.Models.Hits
 
             public Hit Hit (ICharacter source, ICharacter target, IWeapon weapon)
             {
-                return new Hit(source as Character, target as Character, weapon as Weapon, StrengthMultiplier.Value);
+                return new Hit
+                {
+                    Source   = (Character)source,
+                    Target   = (Character)target,
+                    Weapon   = (Weapon   )weapon,
+                    Strength = StrengthMultiplier.Value
+                };
             }            
         }
 

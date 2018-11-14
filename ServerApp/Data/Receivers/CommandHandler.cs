@@ -16,6 +16,8 @@ using ServerApp.Data.Services.Helpers;
 using ServerApp.Data.Services;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
+using ServerApp.Models.Weapons;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerApp.Data.Receivers
 {
@@ -23,14 +25,17 @@ namespace ServerApp.Data.Receivers
     {
         #region PROPERTIES
 
-        IRepository<IHero  > HeroRepository   { get; }
-        IRepository<IDragon> DragonRepository { get; }
-        IRepository<IHit   > HitRepository    { get; }
+        IRepository<Hero>    HeroRepository   { get; }
+        IRepository<Dragon>  DragonRepository { get; }
+        IRepository<Hit>     HitRepository    { get; }
+        IRepository<Weapon>  WeaponRepository { get; }
+
         IConfiguration       Configuration    { get; }
 
         IQueryable<IHero>    Heroes           { get; }
         IQueryable<IDragon>  Dragons          { get; }
         IQueryable<IHit>     Hits             { get; }
+        IQueryable<IWeapon>  Weapons          { get; }
 
         TokenDirector        TokenDirector    { get; }
 
@@ -44,13 +49,16 @@ namespace ServerApp.Data.Receivers
             if (factory       is null) { throw new ArgumentNullException(nameof(factory      )); }
 
             this.Configuration    = configuration;
+
             this.HeroRepository   = factory.Create(s => s.Heroes ());
             this.DragonRepository = factory.Create(s => s.Dragons());
             this.HitRepository    = factory.Create(s => s.Hits   ());
+            this.WeaponRepository = factory.Create(s => s.Weapons());
 
             this.Heroes           = this.HeroRepository  .Request();
             this.Dragons          = this.DragonRepository.Request();
             this.Hits             = this.HitRepository   .Request();
+            this.Weapons          = this.WeaponRepository.Request();
 
             this.TokenDirector    = new TokenDirector();
         }
@@ -70,7 +78,7 @@ namespace ServerApp.Data.Receivers
                 var validationResult   = viewModelValidator.Validate(payload.ViewModel);
                 var modelState         = validationResult.ToModelStateDictionary();
 
-                if (!validationResult.IsValid) return new BadRequestObjectResult(modelState) as IActionResult;
+                if (!validationResult.IsValid) return new ConflictObjectResult(modelState) as IActionResult;
 
 
                 //  Check hero name uniqueness:
@@ -81,11 +89,11 @@ namespace ServerApp.Data.Receivers
                 }) as IActionResult;               
                 
 
-                // Create and save new hero:
+                // Create and save new hero with weapon:
                 var hero = CharacterFactory.Create(s => s.Hero(payload.ViewModel.Name));
 
-                this.HeroRepository.Add(hero);
-
+                this.WeaponRepository.Add(hero.Weapon);
+                this.HeroRepository  .Add(hero);                
 
                 // Create token:
                 var tokenBuilder = new HeroTokenBuilder(this.Configuration, hero);
@@ -146,17 +154,16 @@ namespace ServerApp.Data.Receivers
             {
                 // Check if hero name format is valid:
                 var payload      = command.Payload;
-                var isNameValid  = !(payload.Name.IsNull() || payload.Name.IsEmpty() || payload.Name.IsWhiteSpace());
+                var heroName     = payload.ViewModel.Name ?? String.Empty;
+                var isNameValid  = !(heroName.IsNull() || heroName.IsEmpty() || heroName.IsWhiteSpace());
                 var errorMessage = "Hero with specified name doesn't exist.";
 
                 if (!isNameValid) return new BadRequestObjectResult(new { Message = errorMessage }) as IActionResult;
 
-
                 // Check if hero exists:
-                var hero = this.Heroes.FindByName(payload.Name, SearchType.Equal).FirstOrDefault();
+                var hero = this.Heroes.FindByName(heroName, SearchType.Equal).Include(h => h.Weapon).FirstOrDefault();
 
                 if (hero is null) return new BadRequestObjectResult(new { Message = errorMessage }) as IActionResult;
-
 
                 // Create hero token:
                 var builder  = new HeroTokenBuilder(this.Configuration, hero);

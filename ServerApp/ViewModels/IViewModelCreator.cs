@@ -12,7 +12,7 @@ namespace ServerApp.ViewModels
     public interface IViewModelCreator
     {
         DragonViewModel           DragonViewModel          ();
-        CreateHeroViewModel       CreateHeroViewModel      ();
+        SignupHeroViewModel       CreateHeroViewModel      ();
         SigninHeroViewModel       SigninHeroViewModel      ();
         HeroViewModel             HeroViewModel            ();
         WeaponViewModel           WeaponViewModel          ();

@@ -12,10 +12,10 @@ namespace ServerApp.Models.Weapons
     {
         public override void Configure(EntityTypeBuilder<Weapon> builder)
         {
-            base.Configure(builder);            
+            base.Configure(builder);
 
-            builder.Property(w => w.Name    ).HasField("_name"    ).IsRequired().HasMaxLength(20);
-            builder.Property(w => w.Strength).HasField("_strength");
+            builder.Property(w => w.Name    ).IsRequired().HasMaxLength(20);
+            builder.Property(w => w.Strength);
         }
     }
 }

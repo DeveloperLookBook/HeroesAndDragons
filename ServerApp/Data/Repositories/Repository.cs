@@ -41,39 +41,7 @@ namespace ServerApp.Data.Repositories
         #endregion
 
 
-        #region HELPER METHODS
-
-        /// <summary>
-        /// Method that used to be applied to attach singletons to the DB context.
-        /// </summary>
-        /// <remarks>
-        /// In this project, weapon should be attached to the context before saving 
-        /// or updating it directly, or saving it with models that are referencing
-        /// on some kinds of weapon that were saved in DB already.
-        /// </remarks>
-        /// <typeparam name="TAttachableModel">Model type that should be attached 
-        /// to the DB context.</typeparam>
-        /// <param name="model">Model instance that should be attached to the DB 
-        /// context.</param>
-        /// <returns>Returns true if model was attached to the DB context.</returns>
-        protected bool TryToAttachWeapon(Weapon model)
-        {
-            var weapon         = this.Context.Set<Weapon>();
-            var isModelExists  = weapon.Where(w =>
-                                       w.Id       == model.Id   && 
-                                       w.Name     == model.Name && 
-                                       w.Strength == w.Strength)
-                                       .IsNotEmpty();
-            var iModelAttached = false;
-
-            if (isModelExists)
-            {
-                weapon.Attach(model);
-                iModelAttached = true;
-            }
-
-            return iModelAttached;
-        }
+        #region HELPER METHODS        
 
         private void ChangeState       (TModel              model , EntityState state)
         {

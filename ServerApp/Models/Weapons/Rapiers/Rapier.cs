@@ -7,7 +7,7 @@ namespace ServerApp.Models.Weapons.Rapiers
 {
     public class Rapier : Weapon, IRapier
     {
-        public Rapier() : base((int)WeaponType.Rapier, "Rapier", 15)
+        public Rapier() : base("Rapier", 15)
         {
         }
     }

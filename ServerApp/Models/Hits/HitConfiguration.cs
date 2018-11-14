@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ServerApp.Models.Characters;
+using ServerApp.Models.Weapons;
 
 namespace ServerApp.Models.Hits
 {
@@ -14,10 +16,7 @@ namespace ServerApp.Models.Hits
         {
             base.Configure(builder);
 
-            builder.Property(h => h.Source  ).HasField("_source"  ).IsRequired();
-            builder.Property(h => h.Target  ).HasField("_target"  ).IsRequired();
-            builder.Property(h => h.Weapon  ).HasField("_weapon"  ).IsRequired();
-            builder.Property(h => h.Strength).HasField("_strength");            
+            builder.Property(h => h.Strength);
         }
     }
 }

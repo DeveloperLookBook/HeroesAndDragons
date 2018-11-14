@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ServerApp.Data.Services;
+using ServerApp.ViewModels.Characters.Heroes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace ServerApp.Data.Commands.Payloads
 {
     public class ReadHeroByNamePayload
     {
-        public string Name { get; }
+        public SigninHeroViewModel ViewModel { get; }
 
-        public ReadHeroByNamePayload(string name)
+        public ReadHeroByNamePayload(SigninHeroViewModel ViewModel)
         {
-            this.Name = name ?? String.Empty;
+            this.ViewModel = ViewModel ?? throw new ArgumentNullException(nameof(ViewModel));
         }
     }
 }

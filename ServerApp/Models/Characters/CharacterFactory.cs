@@ -30,7 +30,7 @@ namespace ServerApp.Models.Characters
             static public DragonNameGenerator DragonNameGenerator   => new DragonNameGenerator ();
 
 
-            public Hero   Hero  (string name) => new Hero  (name, WeaponFactory.Create(s => s.Random()));
+            public Hero   Hero  (string name) => new Hero(name) { Weapon = WeaponFactory.Create(s => s.Random()) };
             public Dragon Dragon(           ) => new Dragon(DragonNameGenerator.Generate(), DragonHealthGenerator.Generate());
 
 

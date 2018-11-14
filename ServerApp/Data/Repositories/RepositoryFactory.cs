@@ -16,6 +16,7 @@ namespace ServerApp.Data.Repositories
         HeroesRepository  Heroes ();
         DragonsRepository Dragons();
         HitsRepository    Hits   ();
+        WeaponRepository  Weapons();
     }
 
 
@@ -36,9 +37,10 @@ namespace ServerApp.Data.Repositories
             public Creator(GameDbContext context) => this.Context = context;
 
 
-            public HeroesRepository  Heroes () => HeroesRepository .Create(this.Context);
-            public DragonsRepository Dragons() => DragonsRepository.Create(this.Context);
-            public HitsRepository    Hits   () => HitsRepository   .Create(this.Context);
+            public HeroesRepository  Heroes () => new HeroesRepository (this.Context);
+            public DragonsRepository Dragons() => new DragonsRepository(this.Context);
+            public HitsRepository    Hits   () => new HitsRepository   (this.Context);
+            public WeaponRepository  Weapons() => new WeaponRepository (this.Context);
 
             public virtual void Dispose(bool disposing)
             {

@@ -7,7 +7,7 @@ namespace ServerApp.Models.Weapons.Swords
 {
     public class Sword : Weapon, ISword
     {
-        public Sword() : base((int)WeaponType.Sword, "Sword", 20)
+        public Sword() : base("Sword", 20)
         {
         }
     }

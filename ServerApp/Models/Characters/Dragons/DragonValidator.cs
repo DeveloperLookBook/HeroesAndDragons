@@ -12,12 +12,12 @@ namespace ServerApp.Models.Characters.Dragons
         public DragonValidator()
         {
             RuleFor(d => d.Name)
-                .Must(n => n.SentenceCased()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameIsNotSentenceCased))
-                .Must(n => n.HasNoNumbers ()).WithMessage(DragonContract.Messages.Get(DragonContract.Key.NameContainsNumbers   ));
+                .Must(n => n.SentenceCased()).WithMessage("First letter in the Dragon name must be uppercased.")
+                .Must(n => n.HasNoNumbers ()).WithMessage("Dragon Name mustn't contain numbers.");
 
             RuleFor<int>(d => d.Health)
-                .GreaterThanOrEqualTo(0 ).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsLess0     ))
-                .LessThanOrEqualTo   (10).WithMessage(DragonContract.Messages.Get(DragonContract.Key.HealthIsGreater100));
+                .GreaterThanOrEqualTo(0 ).WithMessage("Dragon Health mustn't be less then 0.")
+                .LessThanOrEqualTo   (10).WithMessage("Dragon Health mustn't be greater then 100.");
         }
     }
 }

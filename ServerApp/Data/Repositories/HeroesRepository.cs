@@ -9,63 +9,10 @@ using System.Threading.Tasks;
 
 namespace ServerApp.Data.Repositories
 {
-    public class HeroesRepository : Repository<IHero>
+    public class HeroesRepository : Repository<Hero>
     {
-        private void TryToAttachWeapon(IEnumerable<IHero> models)
+        public HeroesRepository(GameDbContext context) : base(context)
         {
-            foreach (var model in models)
-            {
-                this.TryToAttachWeapon(model.Weapon);
-            }
         }
-
-
-        public override void Add   (IHero              model )
-        {
-            this.TryToAttachWeapon(model.Weapon);
-
-            base.Add(model);
-        }
-        public override void Add   (IEnumerable<IHero> models)
-        {
-            this.TryToAttachWeapon(models);
-
-            base.Add(models);
-        }
-        public override void Update(IHero              model )
-        {
-            var weapon = model.Weapon;
-
-            this.TryToAttachWeapon(weapon);
-
-            base.Update(model);
-        }
-        public override void Update(IEnumerable<IHero> models)
-        {
-            this.TryToAttachWeapon(models);
-
-            base.Update(models);
-        }
-
-
-        #region SINGLETON
-
-        private static HeroesRepository Instance { get; set; }
-        private static object           Lock     => new object();
-
-        private HeroesRepository(GameDbContext context) : base(context)
-        {
-
-        }
-
-        public static HeroesRepository Create(GameDbContext context)
-        {
-            lock (Lock)
-            {
-                return Instance = ((Instance is null) ? new HeroesRepository(context) : Instance);
-            }
-        }
-
-        #endregion  
     }
 }

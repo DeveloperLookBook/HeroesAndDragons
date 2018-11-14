@@ -12,12 +12,12 @@ namespace ServerApp.Models.Hits
     {
         public HitValidator()
         {
-            RuleFor     (h => h.Source    ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.SourceIsNull  ));
-            RuleFor     (h => h.Target  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.TargetIsNull));
-            RuleFor     (h => h.Weapon  ).NotNull    (   ).WithMessage(HitContract.Messages.Get(HitContract.Key.WeaponIsNull));
+            RuleFor(h => h.Source).NotNull().WithMessage("Hit Source mustn't be Null.");
+            RuleFor(h => h.Target).NotNull().WithMessage("Hit Target mustn't be Null.");
+            RuleFor(h => h.Weapon).NotNull().WithMessage("Hit Weapon mustn't be Null.");
 
-            RuleFor<int>(h => h.Strength).GreaterThanOrEqualTo(1  ).WithMessage(HitContract.Messages.Get(HitContract.Key.StrengthLessThen1  ));
-            RuleFor<int>(h => h.Strength).LessThanOrEqualTo   (100).WithMessage(HitContract.Messages.Get(HitContract.Key.StrengthMoreThen100));
+            RuleFor<int>(h => h.Strength).GreaterThanOrEqualTo(1  ).WithMessage("Hit Strength value must be more or equal to 1.");
+            RuleFor<int>(h => h.Strength).LessThanOrEqualTo   (100).WithMessage("Hit Strength value must be less or equal to 100.");
         }
     }
 }

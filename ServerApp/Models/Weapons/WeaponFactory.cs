@@ -1,6 +1,6 @@
 ﻿using ServerApp.Models.Weapons.Axes;
 using ServerApp.Models.Weapons.Crossbows;
-using ServerApp.Models.Weapons.Knifes;
+using ServerApp.Models.Weapons.Knives;
 using ServerApp.Models.Weapons.Rapiers;
 using ServerApp.Models.Weapons.Shields;
 using ServerApp.Models.Weapons.Swords;
@@ -16,7 +16,7 @@ namespace ServerApp.Models.Weapons
     {
         Axe      Axe     ();
         Crossbow Crossbow();
-        Knife    Knife   ();
+        Knive    Knive   ();
         Rapier   Rapier  ();
         Shield   Shield  ();
         Sword    Sword   ();
@@ -36,11 +36,14 @@ namespace ServerApp.Models.Weapons
             static private Random     RandomNumberGenerator => new Random();
 
 
-            static private TCastTo[]  GetEnumConstantValues<TCastTo>(Type type) where TCastTo : IComparable<TCastTo>
+            static private TCastTo[]  GetEnumConstantValues<TCastTo>(Type type) 
+                where TCastTo : IComparable<TCastTo>
             {
                 return Enum.GetValues(type).Cast<TCastTo>().ToArray();
             }
-            static private T          GetRandomValue       <T>      (T[] array) where T : IComparable<T>
+
+            static private T          GetRandomValue       <T>      (T[] array) 
+                where T : IComparable<T>
             {
                 return array[RandomNumberGenerator.Next(0, array.Count() - 1)];
             }
@@ -55,21 +58,21 @@ namespace ServerApp.Models.Weapons
                 {
                     case WeaponType.Axe     : return this.Axe     ();
                     case WeaponType.Crossbow: return this.Crossbow();
-                    case WeaponType.Knife   : return this.Knife   ();
+                    case WeaponType.Knive   : return this.Knive   ();
                     case WeaponType.Rapier  : return this.Rapier  ();
                     case WeaponType.Sword   : return this.Sword   ();
                     case WeaponType.Shield  : return this.Shield  ();
 
                     default:
                         throw new ArgumentException(
-                            "Automatically generated constant value " +
-                            "of the enum -\"WeaponType\", doesn't " +
-                            "exist.");
+                            $@"Automatically generated constant value " +
+                            $@"of the enum - { nameof(WeaponType) } , " +
+                            "doesn't exist.");
                 }
             }                                
             public Axe      Axe     () => new Axe     ();
             public Crossbow Crossbow() => new Crossbow();
-            public Knife    Knife   () => new Knife   ();
+            public Knive    Knive   () => new Knive   ();
             public Rapier   Rapier  () => new Rapier  ();
             public Shield   Shield  () => new Shield  ();
             public Sword    Sword   () => new Sword   ();
@@ -82,7 +85,7 @@ namespace ServerApp.Models.Weapons
         static public TWeapon Create<TWeapon>(WeaponFactorySelectorFunc<TWeapon> selector)
             where TWeapon : class, IWeapon
         {
-            if (selector is null) { throw new ArgumentNullException(nameof(selector)); }
+            if (selector is null) throw new ArgumentNullException(nameof(selector));
 
             return selector(InstanceCreator);
         }

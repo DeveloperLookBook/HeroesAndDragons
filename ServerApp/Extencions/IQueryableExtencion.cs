@@ -410,11 +410,11 @@ namespace ServerApp.Extencions
         }
         public  static TWeapon             GetKnifeSingleton        <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
         {
-            return queryable.FindByEnum(WeaponType.Knife);
+            return queryable.FindByEnum(WeaponType.Knive);
         }
         public  static Task<TWeapon>       GetKnifeSingletonAsynk   <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
         {
-            return queryable.FindByEnumAsync(WeaponType.Knife);
+            return queryable.FindByEnumAsync(WeaponType.Knive);
         }
         public  static TWeapon             GetRapierSingleton       <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
         {

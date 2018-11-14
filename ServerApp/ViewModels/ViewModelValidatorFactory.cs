@@ -10,7 +10,7 @@ namespace ServerApp.ViewModels
 {
     public interface IViewModelValidatorCreator
     {
-        HeroViewModelValidator CreateHeroViewModelValidator();
+        CreateHeroViewModelValidator CreateHeroViewModelValidator();
     }
 
 
@@ -22,7 +22,7 @@ namespace ServerApp.ViewModels
     {
         private class Creator : IViewModelValidatorCreator
         {
-            public HeroViewModelValidator CreateHeroViewModelValidator() => new HeroViewModelValidator();
+            public CreateHeroViewModelValidator CreateHeroViewModelValidator() => new CreateHeroViewModelValidator();
         }
 
 
@@ -39,7 +39,7 @@ namespace ServerApp.ViewModels
         {
             var type = typeof(TViewModel);
 
-            if (type.Equals(typeof(HeroViewModelValidator))) return Create(s => s.CreateHeroViewModelValidator()) as IValidator<TViewModel>;
+            if (type.Equals(typeof(CreateHeroViewModelValidator))) return Create(s => s.CreateHeroViewModelValidator()) as IValidator<TViewModel>;
 
             throw new ArgumentException("Selected generic type doesn't exist.");
         }

@@ -12,9 +12,8 @@ namespace ServerApp.Models.Characters.Dragons
         static public int MinLength => 4;
         static public int MaxLength => 20;
 
-        public int    ExpectedLength { get; set; }
-        public int    ActualLength   { get => this.Value.Length; }
-        public string Value          { get; set; }
+        public int    ActualLength { get => this.Value.Length; }
+        public string Value        { get; set; } = String.Empty;
         
     }
 }

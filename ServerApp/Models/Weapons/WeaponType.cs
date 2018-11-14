@@ -10,7 +10,7 @@ namespace ServerApp.Models.Weapons
     {
         Axe      = 1,
         Crossbow = 2,
-        Knife    = 3,
+        Knive    = 3,
         Rapier   = 4,
         Sword    = 5,
         Shield   = 6

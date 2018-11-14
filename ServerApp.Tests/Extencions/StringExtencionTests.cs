@@ -163,11 +163,11 @@ namespace ServerApp.Tests.Extencions
         #region TEST DATA
         [TestCase("          "                , ExpectedResult = true )]
         [TestCase("0123456789"                , ExpectedResult = true )]
-        [TestCase("+-/*=%^"                   , ExpectedResult = true )]
-        [TestCase("{}[]()<>"                  , ExpectedResult = true )]
-        [TestCase(".,"                        , ExpectedResult = false)]
-        [TestCase("!?"                        , ExpectedResult = false)]
-        [TestCase("@#$&|\\_"                  , ExpectedResult = true )]
+        [TestCase("+-/*=%^"                   , ExpectedResult = false)]
+        [TestCase("{}[]()<>"                  , ExpectedResult = false)]
+        [TestCase(".,abc"                     , ExpectedResult = false)]
+        [TestCase("abc!?"                     , ExpectedResult = false)]
+        [TestCase("@#$&|\\_"                  , ExpectedResult = false)]
         [TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", ExpectedResult = true )]
         [TestCase("abcdefghijklmnopqrstuvwxyz", ExpectedResult = true )]
         #endregion
@@ -180,11 +180,11 @@ namespace ServerApp.Tests.Extencions
         // TODO : Add more test cases.
         [TestCase("          "                , ExpectedResult = true )]
         [TestCase("0123456789"                , ExpectedResult = true )]
-        [TestCase("+-/*=%^"                   , ExpectedResult = true )]
-        [TestCase("{}[]()<>"                  , ExpectedResult = true )]
+        [TestCase("+-/*=%^"                   , ExpectedResult = false)]
+        [TestCase("{}[]()<>"                  , ExpectedResult = false)]
         [TestCase(".,"                        , ExpectedResult = true )]
         [TestCase("!?"                        , ExpectedResult = true )]
-        [TestCase("@#$&|\\_"                  , ExpectedResult = true )]
+        [TestCase("@#$&|\\_"                  , ExpectedResult = false)]
         [TestCase("ABCDEFGHIJKLMNOPQRSTUVWXYZ", ExpectedResult = true )]
         [TestCase("abcdefghijklmnopqrstuvwxyz", ExpectedResult = true )]
         #endregion

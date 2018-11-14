@@ -14,14 +14,14 @@ namespace ServerApp.Models.Weapons
         public WeaponValidator()
         {
             RuleFor(w => w.Name)
-                .NotNull          (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNull               ))
-                .NotEmpty         (  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsEmtpy              ))
-                .MaximumLength    (20).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameLengthIsGreaterThen20))
-                .Must(n => n.Trimed()).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.NameIsNotTrimed          ));
+                .NotNull          (  ).WithMessage("Weapon Name mustn't be Null.")
+                .NotEmpty         (  ).WithMessage("Weapon Name mustn't be Empty.")
+                .MaximumLength    (20).WithMessage("Weapon Name Length must be less or equal - 20.")
+                .Must(n => n.Trimed()).WithMessage("Weapon Name must be Trimmed.");
 
             RuleFor<int>(w => w.Strength)
-                .GreaterThanOrEqualTo(1  ).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthLessThen1  ))
-                .LessThanOrEqualTo   (100).WithMessage(WeaponContract.Messages.Get(WeaponContract.Key.StrengthMoreThen100));
+                .GreaterThanOrEqualTo(1  ).WithMessage("Weapon Strength value must be more or equal to 1.")
+                .LessThanOrEqualTo   (100).WithMessage("Weapon Strength value must be less or equal to 100.");
         }
     }
 }

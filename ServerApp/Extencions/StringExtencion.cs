@@ -76,14 +76,14 @@ namespace ServerApp.Extencions
         public static bool   SentenceCased       (this string value) => value.IsMatch(@"\A[\p{Lu}].*\z");
                              
                              
-        public static bool   HasNoLetters        (this string value) => value.IsMatch(@"\P{L}" );
-        public static bool   HasNoMarks          (this string value) => value.IsMatch(@"\P{M}" );
-        public static bool   HasNoNumbers        (this string value) => value.IsMatch(@"\P{N}" );       
-        public static bool   HasNoPunctuation    (this string value) => value.IsMatch(@"\P{P}" );
-        public static bool   HasNoSymbols        (this string value) => value.IsMatch(@"\P{S}" );
-        public static bool   HasNoSeparators     (this string value) => value.IsMatch(@"\P{Z}" );
-        public static bool   HasNoControls       (this string value) => value.IsMatch(@"\P{C}" );        
-        public static bool   HasNoLatinCharacters(this string value) => value.IsMatch(@"a-zA-Z");     
+        public static bool   HasNoLetters        (this string value) => !value.IsMatch(@"\p{L}" );
+        public static bool   HasNoMarks          (this string value) => !value.IsMatch(@"\p{M}" );
+        public static bool   HasNoNumbers        (this string value) => !value.IsMatch(@"\p{N}" );
+        public static bool   HasNoPunctuation    (this string value) => !value.IsMatch(@"\p{P}" );
+        public static bool   HasNoSymbols        (this string value) => !value.IsMatch(@"\p{S}" );
+        public static bool   HasNoSeparators     (this string value) => !value.IsMatch(@"\p{Z}" );
+        public static bool   HasNoControls       (this string value) => !value.IsMatch(@"\p{C}" );        
+        public static bool   HasNoLatinCharacters(this string value) => value.IsMatch (@"a-zA-Z");     
                              
                              
         public static bool   HasLetters          (this string value) => !HasNoLetters        (value);

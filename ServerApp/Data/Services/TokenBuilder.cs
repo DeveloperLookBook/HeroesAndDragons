@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using ServerApp.Extencions;
 using System;
@@ -70,12 +71,13 @@ namespace ServerApp.Data.Services
 
         virtual  public string  Build         ()
         {
+            var now      = DateTime.UtcNow;
             var jwtToken = new JwtSecurityToken(
                               issuer            : this.Issuer,
                               audience          : this.Audience,
-                              notBefore         : DateTime.UtcNow,
+                              notBefore         : now,
                               claims            : this.Claims,
-                              expires           : DateTime.UtcNow.AddMinutes(this.LifeTime),
+                              expires           : DateTime.Now.Add(TimeSpan.FromMinutes(this.LifeTime)),
                               signingCredentials: new SigningCredentials(
                                                         this.SecurityKey,
                                                         SecurityAlgorithms.HmacSha256));

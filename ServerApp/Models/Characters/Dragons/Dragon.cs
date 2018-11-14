@@ -11,7 +11,6 @@ namespace ServerApp.Models.Characters.Dragons
     {
         #region FIELDS
 
-        private string _name;
         private short  _health;
 
         #endregion
@@ -19,12 +18,7 @@ namespace ServerApp.Models.Characters.Dragons
 
         #region PROPERTIES
 
-        public override string Name
-        {
-            get => this._name;
-            set => Contract.Name(nameof(value), value, out this._name  );
-        }
-        public          short  Health
+        public short  Health
         {
             get => this._health;
             set
@@ -35,9 +29,6 @@ namespace ServerApp.Models.Characters.Dragons
                 this._health = (short)((value < min) ? min : (value > max) ? max : value);
             }
         }
-
-        [NotMapped]
-        private static  DragonContract Contract => new DragonContract();
 
         #endregion
 

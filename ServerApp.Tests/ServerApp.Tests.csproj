@@ -7,13 +7,54 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.Development.json" />
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.Development.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="nunit" Version="3.11.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServerApp\ServerApp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Weapons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Hosting">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.hosting\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

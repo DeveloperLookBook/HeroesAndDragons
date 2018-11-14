@@ -14,6 +14,8 @@ namespace ServerApp.Models.Characters
         public override void Configure(EntityTypeBuilder<TModel> builder)
         {
             base.Configure(builder);
+
+            builder.Property(d => d.Name).IsRequired().HasMaxLength(20);
         }
     }
 }
