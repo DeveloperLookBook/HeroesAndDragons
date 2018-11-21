@@ -22,7 +22,8 @@ namespace ServerApp.ViewModels
         DragonViewModel           DragonViewModel   (IDragon    dragon   );
         WeaponViewModel           WeaponViewModel   (IWeapon    weapon   );
         HeroViewModel             HeroViewModel     (IHero      hero     );
+        HeroViewModel             HeroViewModel     (IHero      hero     , IWeapon weapon);
         CharacterViewModel        CharacterViewModel(ICharacter character);
-        HeroHitViewModel          HeroHitViewModel  (IHit       hit      );
+        HeroHitViewModel          HeroHitViewModel  (IHit       hit     , ICharacter target, IWeapon weapon);
     }
 }

@@ -34,7 +34,7 @@ namespace ServerApp.Data.Services
         }
         override public ITokenBuilder AddExpiry     ()
         {
-            return base.AddExpiry(10);
+            return base.AddExpiry(120);
         }
         override public ITokenBuilder AddIssuer     ()
         {

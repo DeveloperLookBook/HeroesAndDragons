@@ -18,7 +18,7 @@ namespace ServerApp.ViewModels
         where TViewModel : class, IViewModel;
 
 
-    public static class ViewModelFactory
+    public class ViewModelFactory
     {
         private class ViewModelCreator : IViewModelCreator
         {
@@ -52,9 +52,19 @@ namespace ServerApp.ViewModels
             {
                 return new HeroViewModel()
                 {
+                    Id = hero.Id,
+                    Name = hero.Name,
+                    Weapon = this.WeaponViewModel(hero.Weapon),
+                    Created = new DateTime(hero.Created.Ticks)
+                };
+            }
+            public HeroViewModel             HeroViewModel            (IHero      hero, IWeapon weapon)
+            {
+                return new HeroViewModel()
+                {
                     Id      = hero.Id,
                     Name    = hero.Name,
-                    Weapon  = this.WeaponViewModel(hero.Weapon),
+                    Weapon  = this.WeaponViewModel(weapon),
                     Created = new DateTime(hero.Created.Ticks)
                 };
             }
@@ -62,20 +72,20 @@ namespace ServerApp.ViewModels
             {
                 return new CharacterViewModel()
                 {
-                    Id   = character.Id,
-                    Name = character.Name,
-                    Type = character.GetType().Name
+                    Id      = character.Id,
+                    Name    = character.Name,
+                    Created = character.Created
                 };
             }
-            public HeroHitViewModel          HeroHitViewModel         (IHit       hit      )
+            public HeroHitViewModel          HeroHitViewModel         (IHit       hit , ICharacter target, IWeapon weapon)
             {
                 return new HeroHitViewModel()
                 {
                     Id       = hit.Id,
-                    Target   = this.CharacterViewModel(hit.Target),
-                    Weapon   = this.WeaponViewModel   (hit.Weapon),
+                    Target   = this.CharacterViewModel(target),
+                    Weapon   = this.WeaponViewModel   (weapon),
                     Strength = hit.Strength,
-                    Created  = new DateTime(hit.Created.Ticks),
+                    Created  = hit.Created,
                 };
             }
         }

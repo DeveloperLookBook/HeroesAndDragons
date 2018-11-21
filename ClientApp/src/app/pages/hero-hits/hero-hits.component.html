@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="row align-items-center">
+    <div class="col-sm-12">
+      <h4 style="margin-top: 2.5em">HITS LIST:</h4>
+    </div>
+  </div>
+  <div class="row" *ngIf="hits">
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Dragon name     <fa name="sort" fixed="true" (click)="sortByTargetName()"></fa></th>
+            <th scope="col">Weapon name     <fa name="sort" fixed="true" (click)="sortByWeaponName()"></fa></th>
+            <th scope="col">Weapon Strength <fa name="sort" fixed="true" (click)="sortByWeaponStrength()"></fa></th>
+            <th scope="col">Hit Strength    <fa name="sort" fixed="true" (click)="sortByStrength()"></fa></th>
+            <th scope="col">Hit Created     <fa name="sort" fixed="true" (click)="sortByCreated()"></fa></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hit of hits.models">
+            <th scope="row">{{hit.id}}</th>
+            <td>{{hit.target.name}}</td>
+            <td>{{hit.weapon.name}}</td>
+            <td>{{hit.weapon.strength}}</td>
+            <td>{{hit.strength}}</td>
+            <td>{{hit.created | date: 'short'}}</td>            
+          </tr>                    
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="hits">
+    <div class="col">
+      <app-pagination [maxPageNumber]="hits.params.maxPageNumber" (pageChanged)="LoadPages($event)"></app-pagination>
+    </div>
+  </div>
+</div>

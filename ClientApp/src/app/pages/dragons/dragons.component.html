@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row align-items-center">
+    <div class="col-sm-9">
+      <h4 style="margin-top: 2.5em">DRAGONS LIST:</h4>
+    </div>
+    <div class="col-sm-3">
+      <button type="button" 
+              class="btn btn-primary" 
+              style="margin-top: 2.5em"
+              (click)="createDragon()">
+              Create dragon
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="dragons">
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name    <fa name="sort" fixed="true" (click)="sortByName()"></fa></th>
+            <th scope="col">Created <fa name="sort" fixed="true" (click)="sortByCreated()"></fa></th>
+            <th scope="col">Health  <fa name="sort" fixed="true" (click)="sortByHealth()"></fa></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dragon of dragons.models">
+            <th scope="row">{{dragon.id}}</th>
+            <td>{{dragon.name}}</td>
+            <td>{{dragon.created | date: 'short'}}</td>
+            <td>{{dragon.health}}</td>
+            <td><button type="button" 
+                        class="btn btn-primary"
+                        (click)="hitDragon(dragon.id)">Hit</button></td>
+          </tr>                    
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="dragons">
+    <div class="col">
+      <app-pagination [maxPageNumber]="dragons.params.maxPageNumber" (pageChanged)="LoadPages($event)"></app-pagination>
+    </div>
+  </div>
+</div>

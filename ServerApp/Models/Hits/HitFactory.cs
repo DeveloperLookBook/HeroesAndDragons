@@ -33,7 +33,7 @@ namespace ServerApp.Models.Hits
                     Source   = (Character)source,
                     Target   = (Character)target,
                     Weapon   = (Weapon   )weapon,
-                    Strength = StrengthMultiplier.Value
+                    Strength = (short)(weapon.Strength + StrengthMultiplier.Value)
                 };
             }            
         }

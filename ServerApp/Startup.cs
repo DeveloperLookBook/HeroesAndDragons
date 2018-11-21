@@ -55,7 +55,7 @@ namespace ServerApp
             app.UseAuthentication();
 
             if (env.IsDevelopment())
-            {
+            {                
                 app.UseDeveloperExceptionPage();
             }
             else

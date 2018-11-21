@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServerApp.Data.Commands;
+using ServerApp.Data.Commands.Payloads;
+using ServerApp.Data.Services.Helpers;
 
 namespace ServerApp.Controllers
 {
@@ -11,36 +15,36 @@ namespace ServerApp.Controllers
     [ApiController]
     public class DragonsController : ControllerBase
     {
-        // GET: api/Dragons
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private CommandFactory CommandFactory { get; }
+
+
+        public DragonsController(CommandFactory commandFactory) => this.CommandFactory = commandFactory;
+
+
+        // GET: api/Heroes/search-filter:{filterBy}/order-by:{orderBy}/order:{order}/page-number:{pageNumber?:int}/page-size:{pageSize?:int}
+        [Authorize]
+        [HttpGet("search-filter:{filterBy}/order-by:{orderBy}/order:{order}/page-number:{pageNumber:int}/page-size:{pageSize:int}")]
+        public Task<IActionResult> GetDragons(string filterBy, string orderBy, string order, int pageNumber = 1, int pageSize = 15)
         {
-            return new string[] { "value1", "value2" };
+            if (!Enum.TryParse(filterBy, true, out DragonsFilter   filterCode  )) { filterCode   = 0; }
+            if (!Enum.TryParse(orderBy , true, out DragonsOrdering orderingCode)) { orderingCode = 0; }
+            if (!Enum.TryParse(order   , true, out OrderType       orderCode   )) { orderCode    = 0; }
+
+
+            return this.CommandFactory.Create(s => s.ReadDragons(new ReadDragonsPayload(
+                filterCode,
+                orderingCode,
+                orderCode,
+                pageNumber,
+                pageSize))).Execute();
         }
 
-        // GET: api/Dragons/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // Post: api/create
+        [Authorize]
+        [HttpPost("create")]
+        public Task<IActionResult> CreateDragon()
         {
-            return "value";
-        }
-
-        // POST: api/Dragons
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Dragons/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return this.CommandFactory.Create(s => s.CreateDragon()).Execute();
         }
     }
 }

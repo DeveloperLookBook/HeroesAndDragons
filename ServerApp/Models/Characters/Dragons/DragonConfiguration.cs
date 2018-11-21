@@ -13,7 +13,6 @@ namespace ServerApp.Models.Characters.Dragons
         public override void Configure(EntityTypeBuilder<Dragon> builder)
         {
             builder.Property(d => d.Health).HasField("_health");
-            builder.HasBaseType<Character>();
         }
     }
 }

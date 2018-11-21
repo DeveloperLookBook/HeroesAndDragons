@@ -1,0 +1,27 @@
+<div class="container-fluid h-100">
+    <div class="row align-items-center">
+        <div *enabled-for-auth-users [ngClass]="{'col-md-4': hero }">
+            <span style="color: rgb(163, 216, 236)">Name:  </span> {{hero?.name}}, 
+            <span style="color: rgb(163, 216, 236)">Weapon:</span> {{hero?.weapon?.name}}
+            <span style="color: rgb(163, 216, 236)">Weapon strength:</span> {{hero?.weapon?.strength}}
+        </div>
+        <div [ngClass]="{'col-md-8': hero, 'col': !hero}">
+            <div class="row">
+                <div class="col">
+                    <button  *enabled-for-auth-users (click)="signout()" type="button"  class="btn btn-light float-right" >signout</button>
+                    <button  *enabled-for-auth-users type="button" routerLink="/heroes" routerLinkActive="active" class="btn btn-light float-right">heroes</button>
+                    <button  *enabled-for-auth-users type="button" routerLink="/dragons" routerLinkActive="active" class="btn btn-light float-right">dragons</button>    
+                    <button  *enabled-for-auth-users type="button" routerLink="/hero-hits" routerLinkActive="active" class="btn btn-light float-right">Hero hits</button>    
+                    <button *disabled-for-auth-users type="button" routerLink="/signup" routerLinkActive="active" class="btn btn-light float-right">signup</button>
+                    <button *disabled-for-auth-users type="button" routerLink="/signin" routerLinkActive="active" class="btn btn-light float-right">signin</button>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <div class="row full-height">
+        <div class="col-lg-12 full-height">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+

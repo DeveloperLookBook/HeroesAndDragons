@@ -12,8 +12,7 @@ namespace ServerApp.Models.Characters.Heroes
     {
         public override void Configure(EntityTypeBuilder<Hero> builder)
         {
-            builder.HasIndex(h => h.Name  ).IsUnique();
-            builder.HasBaseType<Character>();
+            builder.HasIndex(h => h.Name).IsUnique();
         }
     }
 }

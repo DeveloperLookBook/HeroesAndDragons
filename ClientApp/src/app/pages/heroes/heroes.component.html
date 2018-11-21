@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12" style="margin-top: 2.5em">
+      <h4>HEROES LIST:</h4>
+    </div>
+  </div>
+  <div class="row" *ngIf="heroes">
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name <fa name="sort" fixed="true" (click)="sortByName()"></fa></th>
+            <th scope="col">Created <fa name="sort" fixed="true" (click)="sortByCreated()"></fa></th>
+            <th scope="col">Weapon name <fa name="sort" fixed="true" (click)="sortByWeaponName()"></fa></th>
+            <th scope="col">Weapon strength <fa name="sort" fixed="true" (click)="sortByWeaponStrength()"></fa></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hero of heroes.models">
+            <th scope="row">{{hero.id}}</th>
+            <td>{{hero.name}}</td>
+            <td>{{hero.created | date: 'short'}}</td>
+            <td>{{hero.weapon.name}}</td>
+            <td>{{hero.weapon.strength}}</td>
+          </tr>                    
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" *ngIf="heroes">
+    <div class="col">
+      <app-pagination [maxPageNumber]="heroes.params.maxPageNumber" (pageChanged)="LoadPages($event)"></app-pagination>
+    </div>
+  </div>
+</div>

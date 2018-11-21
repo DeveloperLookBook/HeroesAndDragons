@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/font-awesome/css/font-awesome.css';
+
+
+html, body, .full-container-size {
+    height: 100%;
+    width: 100%;
+}
+
+.full-height{
+    height: 100%;
+}
+
+.border {
+    border: 1px gray dashed;
+}
+
+

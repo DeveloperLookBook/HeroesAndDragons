@@ -43,17 +43,17 @@ namespace ServerApp.Data.Receivers
 
         #region CONSTRUCTORS
 
-        public CommandHandler(IConfiguration configuration, IRepositoryFactory factory)
+        public CommandHandler(IConfiguration configuration, IRepositoryFactory repositoryFactory)
         {
-            if (configuration is null) { throw new ArgumentNullException(nameof(configuration)); }
-            if (factory       is null) { throw new ArgumentNullException(nameof(factory      )); }
+            if (configuration     is null) { throw new ArgumentNullException(nameof(configuration    )); }
+            if (repositoryFactory is null) { throw new ArgumentNullException(nameof(repositoryFactory)); }
 
             this.Configuration    = configuration;
 
-            this.HeroRepository   = factory.Create(s => s.Heroes ());
-            this.DragonRepository = factory.Create(s => s.Dragons());
-            this.HitRepository    = factory.Create(s => s.Hits   ());
-            this.WeaponRepository = factory.Create(s => s.Weapons());
+            this.HeroRepository   = repositoryFactory.Create(s => s.Heroes ());
+            this.DragonRepository = repositoryFactory.Create(s => s.Dragons());
+            this.HitRepository    = repositoryFactory.Create(s => s.Hits   ());
+            this.WeaponRepository = repositoryFactory.Create(s => s.Weapons());
 
             this.Heroes           = this.HeroRepository  .Request();
             this.Dragons          = this.DragonRepository.Request();
@@ -89,18 +89,21 @@ namespace ServerApp.Data.Receivers
                 }) as IActionResult;               
                 
 
-                // Create and save new hero with weapon:
+                // Create and save new hero with his weapon:
                 var hero = CharacterFactory.Create(s => s.Hero(payload.ViewModel.Name));
 
                 this.WeaponRepository.Add(hero.Weapon);
-                this.HeroRepository  .Add(hero);                
+                this.HeroRepository  .Add(hero);
+
+                // Create hero view model:
+                var view = ViewModelFactory.Create(s => s.HeroViewModel(hero));
 
                 // Create token:
                 var tokenBuilder = new HeroTokenBuilder(this.Configuration, hero);
 
                 this.TokenDirector.CreateToken(tokenBuilder);
 
-                return new OkObjectResult(new { Token = tokenBuilder.Build() }) as IActionResult;
+                return new OkObjectResult(new { Token = tokenBuilder.Build(), Hero = view }) as IActionResult;
 
             });            
         }
@@ -109,7 +112,7 @@ namespace ServerApp.Data.Receivers
             return Task.Run(() =>
             {
                 var payload = command.Payload;
-                var hero    = this.Heroes.FindById(payload.SourceId);
+                var hero    = this.Heroes.FindHeroById(payload.SourceId);
 
                 if (hero   is null) return new BadRequestObjectResult(new {
                     Message = "Hero not found."
@@ -129,7 +132,7 @@ namespace ServerApp.Data.Receivers
                 this.DragonRepository.Update(dragon);
 
 
-                return new OkObjectResult(new { Hit = hit, Dragon = dragon }) as IActionResult;
+                return new OkObjectResult(new { Hit = hit }) as IActionResult;
             });            
         }
         public Task<IActionResult> CreateDragonAsync    (CreateCommand<CommandHandler>                    command)

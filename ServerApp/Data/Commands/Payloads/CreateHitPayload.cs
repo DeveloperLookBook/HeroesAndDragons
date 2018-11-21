@@ -7,8 +7,13 @@ namespace ServerApp.Data.Commands.Payloads
 {
     public class CreateHitPayload
     {
-        public int TargetId { get; }
-        public int SourceId { get; }
+        public int TargetId { get; set; }
+        public int SourceId { get; set; }
+
+        public CreateHitPayload()
+        {
+
+        }
 
         public CreateHitPayload(int targetId, int sourceId)
         {

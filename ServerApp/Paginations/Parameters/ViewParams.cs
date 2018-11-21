@@ -27,7 +27,7 @@ namespace ServerApp.Paginations
             this.PageSize      = (pageSize > this.MaxPageSize  ) ? this.MaxPageSize   : (pageSize < this.MinPageSize  ) ? this.MinPageSize : pageSize;
 
             this.MaxPageNumber = this.CountMaxPageNumber(this.PageSize, modelsCount);
-            this.MinPageNumber = 0;
+            this.MinPageNumber = 1;
             this.PageNumber    = this.GetValidatedPageNumber(pageNumber, this.MinPageNumber, this.MaxPageNumber);
 
             this.HasPreviousPage = this.CurrentPageHasPreviousPage(pageNumber, this.MinPageNumber);
@@ -49,18 +49,18 @@ namespace ServerApp.Paginations
         }
         private bool CurrentPageHasPreviousPage(int pageNumber, int minPageNumber)
         {
-            return (minPageNumber < pageNumber -1);
+            return (minPageNumber < pageNumber);
         }
         private bool CurrentPageHasNextPage    (int pageNumber, int maxPageNumber)
         {
-            return (maxPageNumber > pageNumber + 1);
+            return (maxPageNumber > pageNumber);
         }
         public  int  Skip()
         {
-            int skip = this.PageSize;
+            int skip = ((this.PageNumber * this.PageSize) - this.PageSize);
 
-            if (this.PageSize * this.PageNumber >= this.ModelsCount) skip = 0;
-            if (this.PageSize * this.PageNumber <= 0               ) skip = 0;
+            if (skip >  this.ModelsCount) skip = 0;
+            if (skip <= 0               ) skip = 0;
 
             return skip;
         }

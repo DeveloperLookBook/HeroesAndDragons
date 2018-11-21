@@ -1,0 +1,38 @@
+<div class="container-fluid full-height">
+  <div class="row justify-content-md-center align-items-center full-height">
+    <div class="col"></div>
+    <div class="col-auto full-height d-flex align-items-center">
+      <form (ngSubmit)="onSubmit(signupForm)" #signupForm="ngForm" novalidate>
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input ngModel 
+                 name="name" 
+                 [ngClass]="{'validation-error': error}"
+                 required 
+                 type="text" 
+                 class="form-control" 
+                 id="name" 
+                 aria-describedby="nameHelp" 
+                 placeholder="Input hero name...">
+          <small id="nameHelp" class="form-text text-muted">Please remember your hero name.</small>
+          <ng-container *ngIf="error">
+            <ng-container *ngIf="error.status === 400">
+                <small class="validation-error">
+                    - {{error.message}}
+                </small>
+            </ng-container>            
+            <ng-container *ngIf="error.status === 409">
+              <ng-container *ngIf="error.message.Name">
+                <small *ngFor="let message of error.message.Name" class="validation-error">
+                  - {{message}} <br>
+                </small>
+              </ng-container>
+            </ng-container>
+          </ng-container>          
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!signupForm.valid">Register</button>
+      </form>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

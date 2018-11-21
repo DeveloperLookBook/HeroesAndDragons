@@ -1,4 +1,5 @@
-﻿using ServerApp.Data.Services.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+using ServerApp.Data.Services.Helpers;
 using ServerApp.Models;
 using ServerApp.Models.Characters;
 using ServerApp.Models.Characters.Dragons;
@@ -24,7 +25,7 @@ namespace ServerApp.Extencions
     {
         #region GLOBAL
 
-        public static bool IsEmpty<T>   (this IQueryable<T> queryable)
+        public static bool IsEmpty<T>   (this IQueryable<T> queryable) where T: class, IModel
         {
             return (queryable.Count() == 0);
         }
@@ -201,7 +202,10 @@ namespace ServerApp.Extencions
 
 
         #region HEROE REQUESTS
-
+        public static THero FindHeroById<THero>(this IQueryable<THero> queryable, int id) where THero : class, IHero
+        {
+            return (from c in queryable where (c.Id == id) select c).Include(h => h.Weapon).FirstOrDefault();
+        }
         public static IQueryable<THero>   FilterBy       <THero>(this IQueryable<THero> queryable, HeroesFilter filter) 
             where THero : class, IHero
         {
@@ -236,10 +240,10 @@ namespace ServerApp.Extencions
         public static View<HeroViewModel> ToHeroModelView<THero>(this IQueryable<THero> queryable, int pageNumber, int pageSize = 15, int maxPageSize = 100, int minPageSize = 10) 
             where THero : class, IHero
         {
-            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);            
+            var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
             var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                          select ViewModelFactory.Create(s => s.HeroViewModel(h)))
+                          select ViewModelFactory.Create(s => s.HeroViewModel(h, h.Weapon)))
                           .ToList();
 
             return new View<HeroViewModel>(models, @params);
@@ -292,8 +296,8 @@ namespace ServerApp.Extencions
         {
             var @params = new ViewParams(queryable.Count(), pageNumber, maxPageSize, minPageSize, pageSize);
 
-            var models = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
-                          select ViewModelFactory.Create(s => s.HeroHitViewModel(h)))
+            var models  = (from h in queryable.Skip(@params.Skip()).Take(@params.PageSize)
+                           select ViewModelFactory.Create(s => s.HeroHitViewModel(h, h.Target, h.Weapon)))
                           .ToList();
 
             return new View<HeroHitViewModel>(models, @params);
@@ -391,54 +395,6 @@ namespace ServerApp.Extencions
             weapon = queryable.FindByEnum(type);
 
             return (weapon is null) ? false : true;
-        }
-        public  static TWeapon             GetAxeSingleton          <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Axe);
-        }
-        public  static Task<TWeapon>       GetAxeSingletonAsync     <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Axe);
-        }
-        public  static TWeapon             GetCrossbowSingleton     <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Crossbow);
-        }
-        public  static Task<TWeapon>       GetCrossbowSingletonAsynk<TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Crossbow);
-        }
-        public  static TWeapon             GetKnifeSingleton        <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Knive);
-        }
-        public  static Task<TWeapon>       GetKnifeSingletonAsynk   <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Knive);
-        }
-        public  static TWeapon             GetRapierSingleton       <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Rapier);
-        }
-        public  static Task<TWeapon>       GetRapierSingletonAsync  <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Rapier);
-        }
-        public  static TWeapon             GetShieldSingleton       <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Shield);
-        }
-        public  static Task<TWeapon>       GetShieldSingletonAsync  <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Shield);
-        }
-        public  static TWeapon             GetSwordSingleton        <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnum(WeaponType.Sword);
-        }
-        public  static Task<TWeapon>       GetSwordSingletonAsync   <TWeapon>(this IQueryable<TWeapon> queryable) where TWeapon : class, IWeapon
-        {
-            return queryable.FindByEnumAsync(WeaponType.Sword);
         }        
 
         #endregion
