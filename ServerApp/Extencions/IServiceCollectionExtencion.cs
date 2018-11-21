@@ -46,7 +46,7 @@ namespace ServerApp.Extencions
         {
             return services.AddSingleton(configuration);
         }
-        static public IServiceCollection AddInMememoryDbContext     (this IServiceCollection services)
+        static public IServiceCollection AddSqlServerDbContext      (this IServiceCollection services)
         {
             var connection = @"Server=localhost;Database=HeroesAndDragons;Trusted_Connection=True;ConnectRetryCount=0";
 

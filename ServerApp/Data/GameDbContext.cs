@@ -31,9 +31,6 @@ namespace ServerApp.Data
         public GameDbContext(DbContextOptions options) : base(options)
         {
             if (options is null) { throw new ArgumentNullException(nameof(options)); }
-
-            //this.Database.EnsureDeleted();
-            //this.Database.EnsureCreated();
         }
 
         protected override void OnConfiguring  (DbContextOptionsBuilder optionsBuilder)
